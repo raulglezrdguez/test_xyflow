@@ -27,9 +27,18 @@ const initialNodes: MyNode[] = [
     position: { x: 200, y: 100 },
     data: { label: "Proceso", value: 0 },
   },
+  {
+    id: "3",
+    type: "output",
+    position: { x: 150, y: 150 },
+    data: { variable: "I", operator: 3 },
+  },
 ];
 
-const initialEdges: MyEdge[] = [{ id: "e1-2", source: "1", target: "2" }];
+const initialEdges: MyEdge[] = [
+  { id: "e1-2", source: "1", target: "2" },
+  { id: "e1-3", source: "1", target: "3" },
+];
 
 export default function FlowPage() {
   const [nodes, setNodes] = useState<MyNode[]>(initialNodes);

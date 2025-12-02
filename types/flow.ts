@@ -2,17 +2,23 @@ import { Node, Edge } from "@xyflow/react";
 
 export type MyNodeType = "input" | "default" | "output";
 
-export interface MyNodeData extends Record<string, unknown> {
+export interface MyNodeDataInput extends Record<string, unknown> {
   label: string;
   value?: number;
   description?: string;
 }
 
-export interface MyNodeData1 extends Record<string, unknown> {
+export interface MyNodeDataDefault extends Record<string, unknown> {
   variable: string;
   operator?: number;
 }
 
-// Tipos para tus nodos y bordes
-export type MyNode = Node<MyNodeData | MyNodeData1, MyNodeType>;
+export interface MyNodeDataOutput extends Record<string, unknown> {
+  result: string;
+}
+
+export type MyNode =
+  | Node<MyNodeDataInput, "input">
+  | Node<MyNodeDataDefault, "default">
+  | Node<MyNodeDataOutput, "output">;
 export type MyEdge = Edge;

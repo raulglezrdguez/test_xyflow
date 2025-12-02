@@ -14,6 +14,16 @@ import { useCallback, useState } from "react";
 import { MyNode, MyEdge } from "@/types/flow";
 import "@xyflow/react/dist/style.css";
 
+import { InputNode } from "@/components/InputNode";
+import { DefaultNode } from "@/components/DefaultNode";
+import { OutputNode } from "@/components/OutputNode";
+
+const nodeTypes = {
+  input: InputNode,
+  default: DefaultNode,
+  output: OutputNode,
+};
+
 const initialNodes: MyNode[] = [
   {
     id: "1",
@@ -25,13 +35,13 @@ const initialNodes: MyNode[] = [
     id: "2",
     type: "default",
     position: { x: 200, y: 100 },
-    data: { label: "Proceso", value: 0 },
+    data: { variable: "x", operator: 42 },
   },
   {
     id: "3",
     type: "output",
-    position: { x: 150, y: 150 },
-    data: { variable: "I", operator: 3 },
+    position: { x: 400, y: 0 },
+    data: { result: "Éxito" },
   },
 ];
 
@@ -61,6 +71,7 @@ export default function FlowPage() {
   return (
     <div className="w-full h-screen">
       <ReactFlow
+        nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}

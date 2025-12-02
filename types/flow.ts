@@ -8,6 +8,11 @@ export interface MyNodeData extends Record<string, unknown> {
   description?: string;
 }
 
+export interface MyNodeData1 extends Record<string, unknown> {
+  variable: string;
+  operator?: number;
+}
+
 // Tipos para tus nodos y bordes
-export type MyNode = Node<MyNodeData, MyNodeType>;
+export type MyNode = Node<MyNodeData | MyNodeData1, MyNodeType>;
 export type MyEdge = Edge;

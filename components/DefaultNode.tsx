@@ -7,7 +7,7 @@ export function DefaultNode({ data }: NodeProps<MyNode>) {
   return (
     <div>
       <Handle type="target" position={Position.Top} />
-      <div>
+      <div className="bg-blue-100 text-gray-700">
         {nodeData.variable} - {nodeData.operator}
       </div>
       <Handle type="source" position={Position.Bottom} />

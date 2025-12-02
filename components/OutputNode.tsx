@@ -5,9 +5,11 @@ export function OutputNode({ data }: NodeProps<MyNode>) {
   const nodeData = data as MyNodeDataOutput;
 
   return (
-    <div>
+    <div className="bg-amber-100">
       <Handle type="target" position={Position.Top} />
-      <div>Resultado: {nodeData.result}</div>
+      <div className="bg-amber-100 text-black">
+        Resultado: {nodeData.result}
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export function InputNode({ data }: NodeProps<MyNode>) {
   return (
     <div>
       <Handle type="target" position={Position.Top} />
-      <div>
+      <div className="bg-green-100 text-gray-700">
         {nodeData.label} - {nodeData.value}
       </div>
       <Handle type="source" position={Position.Bottom} />

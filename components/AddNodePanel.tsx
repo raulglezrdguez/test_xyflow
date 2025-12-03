@@ -51,6 +51,7 @@ export function AddNodePanel({
         label: "Nuevo Input",
         value: 123,
         description: "Entrada de datos",
+        status: "idle",
       },
     };
     setNodes((nds) => [...nds, newNode]);
@@ -64,6 +65,7 @@ export function AddNodePanel({
       data: {
         variable: "Nuevo Default",
         operator: 123,
+        status: "idle",
       },
     };
     setNodes((nds) => [...nds, newNode]);
@@ -76,6 +78,7 @@ export function AddNodePanel({
       position: { x: position.x, y: position.y },
       data: {
         result: "Nuevo Result",
+        status: "idle",
       },
     };
     setNodes((nds) => [...nds, newNode]);

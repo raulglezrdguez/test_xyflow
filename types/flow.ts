@@ -1,19 +1,23 @@
 import { Node, Edge } from "@xyflow/react";
 
 export type MyNodeType = "input" | "default" | "output";
+export type NodeStatus = "idle" | "running" | "executed";
 
-export interface MyNodeDataInput extends Record<string, unknown> {
+interface MyNodeDataBase extends Record<string, unknown> {
+  status: NodeStatus;
+}
+export interface MyNodeDataInput extends MyNodeDataBase {
   label: string;
   value?: number;
   description?: string;
 }
 
-export interface MyNodeDataDefault extends Record<string, unknown> {
+export interface MyNodeDataDefault extends MyNodeDataBase {
   variable: string;
   operator?: number;
 }
 
-export interface MyNodeDataOutput extends Record<string, unknown> {
+export interface MyNodeDataOutput extends MyNodeDataBase {
   result: string;
 }
 

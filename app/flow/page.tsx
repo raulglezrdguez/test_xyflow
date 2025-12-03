@@ -10,10 +10,12 @@ import {
   applyEdgeChanges,
   BackgroundVariant,
   Connection,
+  MiniMap,
 } from "@xyflow/react";
 import { useCallback, useState } from "react";
 import { MyNode, MyEdge } from "@/types/flow";
 import "@xyflow/react/dist/style.css";
+import "./styles.css";
 
 import { InputNode } from "@/components/InputNode";
 import { DefaultNode } from "@/components/DefaultNode";
@@ -31,19 +33,19 @@ const initialNodes: MyNode[] = [
     id: "1",
     type: "input",
     position: { x: 0, y: 0 },
-    data: { label: "Entrada", value: 100 },
+    data: { label: "Entrada", value: 100, status: "idle" },
   },
   {
     id: "2",
     type: "default",
     position: { x: 200, y: 100 },
-    data: { variable: "x", operator: 42 },
+    data: { variable: "x", operator: 42, status: "running" },
   },
   {
     id: "3",
     type: "output",
     position: { x: 400, y: 0 },
-    data: { result: "Éxito" },
+    data: { result: "Éxito", status: "executed" },
   },
 ];
 
@@ -140,7 +142,7 @@ export default function FlowPage() {
 
   return (
     <div className="w-full h-screen flex flex-col">
-      <div className="flex-1">
+      <div className="flex-1 [&_.react-flow__node]:bg-transparent! [&_.react-flow__node]:border-0! [&_.react-flow__node]:p-0! [&_.react-flow__node]:min-w-0!">
         <ReactFlow
           nodeTypes={nodeTypes}
           nodes={nodes}
@@ -152,7 +154,7 @@ export default function FlowPage() {
           fitView
         >
           <Background color="#ccc" variant={BackgroundVariant.Dots} />
-          <Controls />
+          <MiniMap />
           <AddNodePanel setNodes={setNodes} nodes={nodes} />
         </ReactFlow>
       </div>

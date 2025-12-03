@@ -10,15 +10,9 @@ import {
   applyEdgeChanges,
   BackgroundVariant,
   Connection,
-  Node,
 } from "@xyflow/react";
 import { useCallback, useState } from "react";
-import {
-  MyNode,
-  MyEdge,
-  MyNodeDataDefault,
-  MyNodeDataOutput,
-} from "@/types/flow";
+import { MyNode, MyEdge } from "@/types/flow";
 import "@xyflow/react/dist/style.css";
 
 import { InputNode } from "@/components/InputNode";
@@ -144,67 +138,8 @@ export default function FlowPage() {
   //     console.log("Nodo drag move:", node);
   //   }, []);
 
-  //   const handleAddInput = useCallback(() => {
-  //     const newNode: Node<MyNodeDataInput, "input"> = {
-  //       id: `${Date.now()}`,
-  //       type: "input",
-  //       position: getCenteredPosition(100),
-  //       data: {
-  //         label: "Nuevo Input",
-  //         value: 123,
-  //         description: "Entrada de datos",
-  //       },
-  //     };
-  //     setNodes((nds) => [...nds, newNode]);
-  //   }, [getCenteredPosition]);
-
-  const handleAddDefault = useCallback(() => {
-    const newNode: Node<MyNodeDataDefault, "default"> = {
-      id: `${Date.now()}`,
-      type: "default",
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: {
-        variable: "I",
-        operator: 2,
-      },
-    };
-    setNodes((nds) => [...nds, newNode]);
-  }, []);
-
-  const handleAddOutput = useCallback(() => {
-    const newNode: Node<MyNodeDataOutput, "output"> = {
-      id: `${Date.now()}`,
-      type: "output",
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: {
-        result: "Result",
-      },
-    };
-    setNodes((nds) => [...nds, newNode]);
-  }, []);
-
   return (
     <div className="w-full h-screen flex flex-col">
-      {/* <div className="p-4 bg-gray-100 border-b flex gap-2">
-        <button
-          onClick={handleAddInput}
-          className="px-4 py-2 bg-green-500 text-white rounded"
-        >
-          + Input
-        </button>
-        <button
-          onClick={handleAddDefault}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          + Default
-        </button>
-        <button
-          onClick={handleAddOutput}
-          className="px-4 py-2 bg-yellow-500 text-white rounded"
-        >
-          + Output
-        </button>
-      </div> */}
       <div className="flex-1">
         <ReactFlow
           nodeTypes={nodeTypes}

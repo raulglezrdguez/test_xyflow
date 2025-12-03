@@ -16,7 +16,6 @@ import { useCallback, useState } from "react";
 import {
   MyNode,
   MyEdge,
-  MyNodeDataInput,
   MyNodeDataDefault,
   MyNodeDataOutput,
 } from "@/types/flow";
@@ -25,6 +24,7 @@ import "@xyflow/react/dist/style.css";
 import { InputNode } from "@/components/InputNode";
 import { DefaultNode } from "@/components/DefaultNode";
 import { OutputNode } from "@/components/OutputNode";
+import { AddNodePanel } from "@/components/AddNodePanel";
 
 const nodeTypes = {
   input: InputNode,
@@ -89,22 +89,74 @@ export default function FlowPage() {
   );
 
   const onNodeClick = useCallback((_: React.MouseEvent, node: MyNode) => {
-    console.log("Nodo clickeado:", node);
+    console.log("Nodo clickeado:", node.position);
   }, []);
 
-  const handleAddInput = useCallback(() => {
-    const newNode: Node<MyNodeDataInput, "input"> = {
-      id: `${Date.now()}`,
-      type: "input",
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: {
-        label: "Nuevo Input",
-        value: 123,
-        description: "Entrada de datos",
-      },
-    };
-    setNodes((nds) => [...nds, newNode]);
-  }, []);
+  //   const onNodeDragStop = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo arrastrado:", node);
+  //   }, []);
+
+  //   const onNodeDoubleClick = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo doble clickeado:", node);
+  //   }, []);
+
+  //   const onNodeContextMenu = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo clic derecho:", node);
+  //   }, []);
+
+  //   const onNodeMouseEnter = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo mouse enter:", node);
+  //   }, []);
+
+  //   const onNodeMouseLeave = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo mouse leave:", node);
+  //   }, []);
+
+  //   const onNodeDragStart = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag start:", node);
+  //   }, []);
+
+  //   const onNodeDrag = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag:", node);
+  //   }, []);
+
+  //   const onNodeDragEnd = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag end:", node);
+  //   }, []);
+
+  //   const onNodeDragOver = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag over:", node);
+  //   }, []);
+
+  //   const onNodeDragEnter = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag enter:", node);
+  //   }, []);
+
+  //   const onNodeDragExit = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag exit:", node);
+  //   }, []);
+
+  //   const onNodeDragLeave = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag leave:", node);
+  //   }, []);
+
+  //   const onNodeDragMove = useCallback((_: React.MouseEvent, node: MyNode) => {
+  //     console.log("Nodo drag move:", node);
+  //   }, []);
+
+  //   const handleAddInput = useCallback(() => {
+  //     const newNode: Node<MyNodeDataInput, "input"> = {
+  //       id: `${Date.now()}`,
+  //       type: "input",
+  //       position: getCenteredPosition(100),
+  //       data: {
+  //         label: "Nuevo Input",
+  //         value: 123,
+  //         description: "Entrada de datos",
+  //       },
+  //     };
+  //     setNodes((nds) => [...nds, newNode]);
+  //   }, [getCenteredPosition]);
 
   const handleAddDefault = useCallback(() => {
     const newNode: Node<MyNodeDataDefault, "default"> = {
@@ -133,7 +185,7 @@ export default function FlowPage() {
 
   return (
     <div className="w-full h-screen flex flex-col">
-      <div className="p-4 bg-gray-100 border-b flex gap-2">
+      {/* <div className="p-4 bg-gray-100 border-b flex gap-2">
         <button
           onClick={handleAddInput}
           className="px-4 py-2 bg-green-500 text-white rounded"
@@ -152,7 +204,7 @@ export default function FlowPage() {
         >
           + Output
         </button>
-      </div>
+      </div> */}
       <div className="flex-1">
         <ReactFlow
           nodeTypes={nodeTypes}
@@ -166,6 +218,7 @@ export default function FlowPage() {
         >
           <Background color="#ccc" variant={BackgroundVariant.Dots} />
           <Controls />
+          <AddNodePanel setNodes={setNodes} nodes={nodes} />
         </ReactFlow>
       </div>
     </div>

@@ -1,28 +1,45 @@
 import { Node, Edge } from "@xyflow/react";
 
-export type MyNodeType = "input" | "default" | "output";
+export type MyNodeType = "input" | "question" | "http-request" | "output";
 export type NodeStatus = "idle" | "running" | "executed";
+export type NodeHttpStatus = "idle" | "loading" | "success" | "error";
+export type QuestionType = "text" | "select" | "number";
 
-interface MyNodeDataBase extends Record<string, unknown> {
-  status: NodeStatus;
-}
-export interface MyNodeDataInput extends MyNodeDataBase {
+interface MyNodeDataRoot extends Record<string, unknown> {
   label: string;
-  value?: number;
-  description?: string;
 }
 
-export interface MyNodeDataDefault extends MyNodeDataBase {
-  variable: string;
-  operator?: number;
+export interface QuestionNodeData extends MyNodeDataRoot {
+  question: string;
+  questionType: QuestionType;
+  options?: string[];
+  status?: NodeStatus;
 }
 
-export interface MyNodeDataOutput extends MyNodeDataBase {
-  result: string;
+export interface HttpNodeData extends MyNodeDataRoot {
+  endpoint: string;
+  method: "GET" | "POST";
+  status?: NodeHttpStatus;
+  response?: unknown;
+}
+
+export interface InputNodeData extends MyNodeDataRoot {
+  status?: NodeStatus;
+}
+
+export interface OutputNodeData extends MyNodeDataRoot {
+  status?: NodeStatus;
+  result: unknown;
 }
 
 export type MyNode =
-  | Node<MyNodeDataInput, "input">
-  | Node<MyNodeDataDefault, "default">
-  | Node<MyNodeDataOutput, "output">;
-export type MyEdge = Edge;
+  | Node<InputNodeData, "input">
+  | Node<QuestionNodeData, "question">
+  | Node<HttpNodeData, "http-request">
+  | Node<OutputNodeData, "output">;
+
+export interface MyEdge extends Edge {
+  data?: {
+    condition?: string; // expresión JS: "answers['nodo1'] === 'si'"
+  };
+}

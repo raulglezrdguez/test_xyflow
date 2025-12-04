@@ -36,21 +36,26 @@ const initialNodes: MyNode[] = [
   },
   {
     id: "2",
-    type: "default",
+    type: "question",
     position: { x: 200, y: 100 },
-    data: { variable: "x", operator: 42, status: "running" },
+    data: {
+      label: "label",
+      question: "question",
+      questionType: "number",
+      status: "idle",
+    },
   },
   {
     id: "3",
     type: "output",
     position: { x: 400, y: 0 },
-    data: { result: "Éxito", status: "executed" },
+    data: { label: "label", result: "Éxito", status: "idle" },
   },
 ];
 
 const initialEdges: MyEdge[] = [
   { id: "e1-2", source: "1", target: "2" },
-  { id: "e1-3", source: "1", target: "3" },
+  { id: "e1-3", source: "2", target: "3" },
 ];
 
 export default function FlowPage() {
@@ -152,7 +157,11 @@ export default function FlowPage() {
           onNodeClick={onNodeClick}
           fitView
         >
-          <Background color="#ccc" variant={BackgroundVariant.Dots} />
+          <Background
+            color="#1a1a1a"
+            variant={BackgroundVariant.Dots}
+            style={{ background: "#494949" }}
+          />
           <MiniMap />
           <AddNodePanel setNodes={setNodes} nodes={nodes} />
         </ReactFlow>

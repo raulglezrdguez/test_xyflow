@@ -1,15 +1,15 @@
-import type { MyNode, MyNodeDataDefault } from "@/types/flow";
+import type { MyNode, QuestionNodeData } from "@/types/flow";
 import { NodeProps, Handle, Position } from "@xyflow/react";
 import { Play, CheckCircle, Clock } from "lucide-react";
 
 export function DefaultNode({ data }: NodeProps<MyNode>) {
-  const nodeData = data as MyNodeDataDefault;
+  const nodeData = data as QuestionNodeData;
   const status = nodeData.status || "idle";
 
   const statusStyles = {
     idle: "bg-gray-100 border-gray-400 text-gray-600",
-    running: "bg-blue-100 border-blue-500 text-blue-700 animate-pulse",
-    executed: "bg-green-100 border-green-500 text-green-700",
+    running: "bg-green-100 border-green-500 text-green-700 animate-pulse",
+    executed: "bg-blue-100 border-blue-500 text-blue-700",
   };
 
   const StatusIcon = {
@@ -23,7 +23,7 @@ export function DefaultNode({ data }: NodeProps<MyNode>) {
       <div className={`flex justify-center  ${statusStyles[status]}`}>
         <div className="text-sm font-semibold">
           <div className="truncate">
-            {nodeData.variable} & {nodeData.operator ?? ""}
+            {nodeData.label} & {nodeData.question ?? ""}
           </div>
         </div>
         <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full border border-gray-300 flex items-center justify-center shadow-sm">

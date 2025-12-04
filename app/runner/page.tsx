@@ -7,7 +7,6 @@ import { FlowMachineProvider } from "@/contexts/flowMachineContext";
 import { ExecutionPanel } from "@/components/ExecutionPanel";
 import { QuestionNode } from "@/components/QuestionNode";
 import { HttpNode } from "@/components/HttpNode";
-import { DefaultNode } from "@/components/DefaultNode";
 
 import "@xyflow/react/dist/style.css";
 import {

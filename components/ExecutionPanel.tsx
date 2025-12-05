@@ -12,10 +12,6 @@ export function ExecutionPanel() {
 
   const startNode = nodes.find((n) => n.type === "input");
 
-  console.log("Estado máquina:", snapshot.value);
-  console.log("Nodo actual:", snapshot.context.currentNodeId);
-  console.log("Respuestas:", snapshot.context.answers);
-
   // Estado idle: muestra botón de inicio
   if (snapshot.value === "idle") {
     return (
@@ -25,9 +21,7 @@ export function ExecutionPanel() {
             if (startNode) {
               useFlowStore.getState().setNodeStatus(startNode.id, "running");
             }
-            console.log(startNode);
             actorRef.send({ type: "START" });
-            console.log("✅ Flujo iniciado");
           }}
           className="hover:cursor-pointer"
         >
@@ -53,7 +47,7 @@ export function ExecutionPanel() {
     return (
       <div className="p-4 bg-green-100 shadow-lg rounded-lg">
         <h2 className="font-bold mb-2">✅ Ejecución Completada</h2>
-        <pre className="text-xs bg-white p-2 rounded">
+        <pre className="text-xs bg-white p-2 rounded text-wrap">
           {JSON.stringify(snapshot.context.answers, null, 2)}
         </pre>
       </div>

@@ -15,12 +15,10 @@ export function FlowMachineProvider({ children }: { children: ReactNode }) {
   const nodes = useFlowStore((state) => state.nodes);
   const edges = useFlowStore((state) => state.edges);
 
-  // ✅ Desestructura el tercer elemento (actor ref)
   const [snapshot, send, actorRef] = useMachine(flowMachine, {
     input: { nodes, edges },
   });
 
-  // ✅ Suscribe a cambios para sincronizar con Zustand
   useEffect(() => {
     const subscription = actorRef.subscribe((nextSnapshot) => {
       // Actualiza nodo actual en Zustand
@@ -51,7 +49,6 @@ export function FlowMachineProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// ✅ Hook para enviar eventos
 export const useFlowMachine = (): FlowMachineActorRef => {
   const context = useContext(FlowMachineContext);
   if (!context)
@@ -59,7 +56,6 @@ export const useFlowMachine = (): FlowMachineActorRef => {
   return context;
 };
 
-// ✅ Hook para leer el snapshot (opcional)
 export const useFlowSnapshot = () => {
   const actorRef = useFlowMachine();
   return actorRef.getSnapshot();
@@ -85,7 +81,6 @@ export const useFlowSnapshot = () => {
 //     input: nodes.length > 0 ? { nodes, edges } : { nodes: [], edges: [] },
 //   });
 
-//   // ✅ Sincroniza Zustand con XState
 //   const setCurrentNodeId = useFlowStore((state) => state.setCurrentNodeId);
 //   const setAnswer = useFlowStore((state) => state.setAnswer);
 
@@ -114,7 +109,6 @@ export const useFlowSnapshot = () => {
 //     return () => subscription.unsubscribe();
 //   }, [actorRef, setCurrentNodeId, setAnswer]);
 
-//   // ✅ Pasa el actorRef al contexto, NO el array completo
 //   return (
 //     <FlowMachineContext.Provider value={actorRef}>
 //       {children}
@@ -122,7 +116,6 @@ export const useFlowSnapshot = () => {
 //   );
 // }
 
-// // ✅ Hook para acceder al actor (para enviar eventos)
 // export const useFlowMachine = (): FlowMachineActorRef => {
 //   const context = useContext(FlowMachineContext);
 //   if (!context) {
@@ -131,7 +124,6 @@ export const useFlowSnapshot = () => {
 //   return context;
 // };
 
-// // ✅ Hook adicional para leer el snapshot (opcional pero útil)
 // export const useFlowSnapshot = () => {
 //   const actorRef = useFlowMachine();
 //   return actorRef.getSnapshot();

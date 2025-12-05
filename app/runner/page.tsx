@@ -51,17 +51,18 @@ const initialNodes: MyNode[] = [
       status: "idle",
     } as QuestionNodeData,
   },
-  // {
-  //   id: "3",
-  //   type: "http-request",
-  //   position: { x: 600, y: 150 },
-  //   data: {
-  //     label: "Verificar API",
-  //     endpoint: "https://api.example.com/verify-age",
-  //     method: "POST" as const,
-  //     status: "idle",
-  //   } as HttpNodeData,
-  // },
+  {
+    id: "3",
+    type: "http-request",
+    position: { x: 600, y: 150 },
+    data: {
+      label: "Verificar API",
+      endpoint: "http://metaphorpsum.com/paragraphs/2",
+      method: "GET" as const,
+      responseType: "text" as const,
+      status: "idle",
+    } as HttpNodeData,
+  },
   {
     id: "4",
     type: "output",
@@ -76,9 +77,9 @@ const initialNodes: MyNode[] = [
 
 const initialEdges: MyEdge[] = [
   { id: "e1-2", source: "1", target: "2" },
-  { id: "e2-4", source: "2", target: "4" },
-  // { id: "e3-4", source: "3", target: "4" },
-  // { id: "e3-4", source: "3", target: "4" },
+  // { id: "e2-4", source: "2", target: "4" },
+  { id: "e2-3", source: "2", target: "3" },
+  { id: "e3-4", source: "3", target: "4" },
 ];
 
 function FlowWithExecution() {

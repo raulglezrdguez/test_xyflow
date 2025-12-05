@@ -17,13 +17,18 @@ type FlowEvent =
   | { type: "RESET" };
 
 const httpActor = fromPromise(
-  async ({ input }: { input: { endpoint: string; method: string } }) => {
+  async ({
+    input,
+  }: {
+    input: { endpoint: string; method: string; responseType: string };
+  }) => {
     const response = await fetch(input.endpoint, {
       method: input.method,
       headers: { "Content-Type": "application/json" },
+      // body: "",
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
+    return input.responseType === "text" ? response.text() : response.json();
   }
 );
 
@@ -93,6 +98,7 @@ export const flowMachine = createMachine(
                 return {
                   endpoint: node.data.endpoint,
                   method: node.data.method,
+                  responseType: node.data.responseType,
                 };
               },
               onDone: {

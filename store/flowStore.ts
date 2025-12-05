@@ -17,7 +17,6 @@ type FlowStore = {
   onEdgesChange: (changes: EdgeChange<MyEdge>[]) => void;
   onConnect: (connection: Connection) => void;
 
-  // ✅ Método específico para actualizar status
   setNodeStatus: (nodeId: string, status: string) => void;
   setCurrentNodeId: (nodeId: string | null) => void;
   setAnswer: (nodeId: string, answer: unknown) => void;

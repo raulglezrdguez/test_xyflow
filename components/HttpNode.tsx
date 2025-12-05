@@ -11,7 +11,6 @@ export function HttpNode({ data, id }: NodeProps<MyNode>) {
   const actorRef = useFlowMachine();
   const nodeData = data as HttpNodeData;
 
-  // ✅ Selector para saber si este nodo está en ejecución
   const isThisNodeRunning = useSelector(actorRef, (state) => {
     return (
       state.value === "running.processingHttp" &&

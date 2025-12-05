@@ -10,13 +10,9 @@ export function QuestionModal() {
   const actorRef = useFlowMachine();
   const [answer, setAnswer] = useState("");
 
-  console.log(actorRef);
-
-  // ✅ SELECTOR: Solo se renderiza si hay una pregunta activa
   const currentQuestion = useSelector(
     actorRef,
     (state) => {
-      // ✅ VERIFICA ESTADO EXACTO
       const isWaiting =
         typeof state.value === "object" &&
         state.value.running === "waitingInput";
@@ -31,10 +27,6 @@ export function QuestionModal() {
     },
     (a, b) => JSON.stringify(a) === JSON.stringify(b) // Comparador profundo
   );
-
-  console.log("📌 Estado máquina:", actorRef.getSnapshot().value);
-  console.log("🎯 Nodo actual:", actorRef.getSnapshot().context.currentNodeId);
-  console.log("📝 Pregunta detectada:", currentQuestion);
 
   // Si no hay pregunta activa, no renderizar nada
   if (!currentQuestion) return null;
@@ -106,13 +98,11 @@ export function QuestionModal() {
 
 //   const [answer, setAnswer] = useState("");
 
-//   // ✅ Usa el snapshot para obtener datos
 //   const currentNodeId = snapshot.context.currentNodeId;
 //   const currentNode = snapshot.context.nodes.find(
 //     (n: MyNode) => n.id === currentNodeId
 //   );
 
-//   // ✅ Verifica el estado actual de la máquina
 //   if (
 //     snapshot.value !== "running" ||
 //     !currentNode ||

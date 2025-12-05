@@ -19,6 +19,7 @@ export interface QuestionNodeData extends MyNodeDataRoot {
 export interface HttpNodeData extends MyNodeDataRoot {
   endpoint: string;
   method: "GET" | "POST";
+  responseType: "json" | "text";
   status?: NodeHttpStatus;
   response?: unknown;
 }

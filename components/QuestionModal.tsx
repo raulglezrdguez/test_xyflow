@@ -4,11 +4,11 @@
 import { useState } from "react";
 import { useSelector } from "@xstate/react";
 import { useFlowMachine } from "@/contexts/flowMachineContext";
-import type { MyNode, QuestionNodeData } from "@/types/flow";
+import type { MyNode, QuestionNodeData, QuestionOption } from "@/types/flow";
 
 export function QuestionModal() {
   const actorRef = useFlowMachine();
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState<QuestionOption | string>("");
 
   const currentQuestion = useSelector(
     actorRef,
@@ -50,21 +50,38 @@ export function QuestionModal() {
 
         {data.questionType === "select" && data.options ? (
           <select
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
+            value={(answer as QuestionOption).id?.toString() || ""}
+            onChange={(e) => {
+              const selectedId = e.target.value; // El id de la opción
+              const selectedOption = data.options?.find(
+                (opt) => opt.id.toString() === selectedId
+              );
+
+              if (selectedOption) {
+                setAnswer({
+                  id: selectedOption.id,
+                  value: selectedOption.value,
+                });
+              } else {
+                setAnswer({
+                  id: "0",
+                  value: "",
+                });
+              }
+            }}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">Selecciona una opción...</option>
+            <option id="0">Selecciona una opción...</option>
             {data.options.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
+              <option key={opt.id} value={opt.id.toString()}>
+                {opt.value}
               </option>
             ))}
           </select>
         ) : (
           <input
             type={data.questionType}
-            value={answer}
+            value={answer as string}
             onChange={(e) => setAnswer(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Escribe tu respuesta..."
@@ -87,78 +104,34 @@ export function QuestionModal() {
   );
 }
 
-//"use client";
-// import { useFlowMachine, useFlowSnapshot } from "@/contexts/flowMachineContext";
-// import type { MyNode, QuestionNodeData } from "@/types/flow";
-// import { useState } from "react";
-
-// export function QuestionModal() {
-//   const actorRef = useFlowMachine();
-//   const snapshot = useFlowSnapshot();
-
-//   const [answer, setAnswer] = useState("");
-
-//   const currentNodeId = snapshot.context.currentNodeId;
-//   const currentNode = snapshot.context.nodes.find(
-//     (n: MyNode) => n.id === currentNodeId
-//   );
-
-//   if (
-//     snapshot.value !== "running" ||
-//     !currentNode ||
-//     currentNode.type !== "question"
-//   ) {
-//     return null;
-//   }
-
-//   const data = currentNode.data as QuestionNodeData;
-
-//   const handleSubmit = () => {
-//     actorRef.send({
-//       type: "ANSWER",
-//       nodeId: currentNodeId || "",
-//       answer: data.questionType === "number" ? Number(answer) : answer,
-//     });
-//     setAnswer("");
-//   };
-
-//   return (
-//     // ... tu UI aquí
-//     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-//       <div className="bg-white rounded-xl p-6 w-96 shadow-2xl">
-//         <h2 className="text-xl font-bold mb-4">{data.label}</h2>
-//         <p className="mb-4">{data.question}</p>
-
-//         {data.questionType === "select" && data.options ? (
-//           <select
-//             value={answer}
-//             onChange={(e) => setAnswer(e.target.value)}
-//             className="w-full px-3 py-2 border rounded-lg"
-//           >
-//             <option value="">Selecciona...</option>
-//             {data.options.map((opt) => (
-//               <option key={opt} value={opt}>
-//                 {opt}
-//               </option>
-//             ))}
-//           </select>
-//         ) : (
-//           <input
-//             type={data.questionType}
-//             value={answer}
-//             onChange={(e) => setAnswer(e.target.value)}
-//             className="w-full px-3 py-2 border rounded-lg"
-//             placeholder="Tu respuesta..."
-//           />
-//         )}
-
-//         <button
-//           onClick={handleSubmit}
-//           className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded-lg"
-//         >
-//           Responder
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
+/**
+ * 
+ * <select
+  value={(answer as QuestionOption).id?.toString() || ""}
+  onChange={(e) => {
+    const selectedId = e.target.value; // El id de la opción
+    const selectedOption = data.options.find(opt => opt.id.toString() === selectedId);
+    
+    if (selectedOption) {
+      setAnswer({
+        id: selectedOption.id,
+        value: selectedOption.value, // El texto visible
+      });
+    } else {
+      // Opción por defecto "Selecciona..."
+      setAnswer({
+        id: 0,
+        value: "",
+      });
+    }
+  }}
+  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+>
+  <option value="">Selecciona una opción...</option>
+  {data.options.map((opt) => (
+    <option key={opt.id} value={opt.id.toString()}>
+      {opt.value}
+    </option>
+  ))}
+</select>
+ */

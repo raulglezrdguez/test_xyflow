@@ -3,7 +3,7 @@ import { Node, Edge } from "@xyflow/react";
 export type MyNodeType = "input" | "question" | "http-request" | "output";
 export type NodeStatus = "idle" | "running" | "executed" | "error";
 export type QuestionType = "text" | "select" | "number";
-
+export type QuestionOption = { id: string; value: string };
 interface MyNodeDataRoot extends Record<string, unknown> {
   label: string;
 }
@@ -11,7 +11,7 @@ interface MyNodeDataRoot extends Record<string, unknown> {
 export interface QuestionNodeData extends MyNodeDataRoot {
   question: string;
   questionType: QuestionType;
-  options?: string[];
+  options?: QuestionOption[];
   status?: NodeStatus;
 }
 

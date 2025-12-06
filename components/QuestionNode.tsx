@@ -36,7 +36,7 @@ export function QuestionNode({ data }: NodeProps<MyNode>) {
           nodeData.options &&
           nodeData.options.map((opt, i) => (
             <div key={i} className="mt-2 text-xs max-w-48">
-              {opt}
+              {opt.id}: {opt.value}
             </div>
           ))}
 

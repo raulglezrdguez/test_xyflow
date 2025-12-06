@@ -55,8 +55,8 @@ const initialNodes: MyNode[] = [
       // questionType: "number",
       questionType: "select",
       options: [
-        "opcion 1 con mas texto",
-        "opción 2 con un poquito mas de texto todavia",
+        { id: "1", value: "opcion 1 con mas texto" },
+        { id: "2", value: "opción 2 con un poquito mas de texto todavia" },
       ],
       // options: undefined,
       status: "idle",

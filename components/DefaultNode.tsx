@@ -1,6 +1,6 @@
 import type { MyNode, QuestionNodeData } from "@/types/flow";
 import { NodeProps, Handle, Position } from "@xyflow/react";
-import { Play, CheckCircle, Clock } from "lucide-react";
+import { Play, CheckCircle, Clock, XCircle } from "lucide-react";
 
 export function DefaultNode({ data }: NodeProps<MyNode>) {
   const nodeData = data as QuestionNodeData;
@@ -10,12 +10,14 @@ export function DefaultNode({ data }: NodeProps<MyNode>) {
     idle: "bg-gray-100 border-gray-400 text-gray-600",
     running: "bg-green-100 border-green-500 text-green-700 animate-pulse",
     executed: "bg-blue-100 border-blue-500 text-blue-700",
+    error: "bg-red-100 border-red-500 text-red-700",
   };
 
   const StatusIcon = {
     idle: Clock,
     running: Play,
     executed: CheckCircle,
+    error: XCircle,
   }[status];
 
   return (

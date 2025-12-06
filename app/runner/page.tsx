@@ -1,7 +1,11 @@
-// app/runner/page.tsx
 "use client";
 
-import { ReactFlow, Background, Controls } from "@xyflow/react";
+import {
+  ReactFlow,
+  Background,
+  Controls,
+  BackgroundVariant,
+} from "@xyflow/react";
 import { useFlowStore } from "@/store/flowStore";
 import { FlowMachineProvider } from "@/contexts/flowMachineContext";
 import { ExecutionPanel } from "@/components/ExecutionPanel";
@@ -9,6 +13,8 @@ import { QuestionNode } from "@/components/QuestionNode";
 import { HttpNode } from "@/components/HttpNode";
 
 import "@xyflow/react/dist/style.css";
+import "./styles.css";
+
 import {
   HttpNodeData,
   InputNodeData,
@@ -31,7 +37,7 @@ const nodeTypes = {
 
 const initialNodes: MyNode[] = [
   {
-    id: "1",
+    id: "I",
     type: "input",
     position: { x: 0, y: 0 },
     data: {
@@ -40,19 +46,24 @@ const initialNodes: MyNode[] = [
     } as InputNodeData,
   },
   {
-    id: "2",
+    id: "II",
     type: "question",
     position: { x: 300, y: 150 },
     data: {
       label: "Pregunta de Edad",
       question: "¿Cuál es tu edad?",
-      questionType: "number",
-      options: [],
+      // questionType: "number",
+      questionType: "select",
+      options: [
+        "opcion 1 con mas texto",
+        "opción 2 con un poquito mas de texto todavia",
+      ],
+      // options: undefined,
       status: "idle",
     } as QuestionNodeData,
   },
   {
-    id: "3",
+    id: "III",
     type: "http-request",
     position: { x: 600, y: 150 },
     data: {
@@ -64,7 +75,7 @@ const initialNodes: MyNode[] = [
     } as HttpNodeData,
   },
   {
-    id: "4",
+    id: "IV",
     type: "output",
     position: { x: 900, y: 0 },
     data: {
@@ -76,10 +87,9 @@ const initialNodes: MyNode[] = [
 ];
 
 const initialEdges: MyEdge[] = [
-  { id: "e1-2", source: "1", target: "2" },
-  // { id: "e2-4", source: "2", target: "4" },
-  { id: "e2-3", source: "2", target: "3" },
-  { id: "e3-4", source: "3", target: "4" },
+  { id: "eI-II", source: "I", target: "II" },
+  { id: "eII-III", source: "II", target: "III" },
+  { id: "eIII-IV", source: "III", target: "IV" },
 ];
 
 function FlowWithExecution() {
@@ -101,7 +111,11 @@ function FlowWithExecution() {
           nodeTypes={nodeTypes}
           fitView
         >
-          <Background />
+          <Background
+            color={"#aaa"}
+            style={{ background: "#333" }}
+            variant={BackgroundVariant.Dots}
+          />
           <Controls />
         </ReactFlow>
       </div>

@@ -103,29 +103,35 @@ export const flowMachine = createMachine(
               },
               onDone: {
                 target: "evaluating",
-                actions: assign({
-                  answers: ({ context, event }) => ({
-                    ...context.answers,
-                    [context.currentNodeId as string]: event.output,
+                actions: [
+                  assign({
+                    answers: ({ context, event }) => ({
+                      ...context.answers,
+                      [context.currentNodeId as string]: event.output,
+                    }),
                   }),
-                }),
+                  "markNodeAsExecuted",
+                ],
               },
               onError: {
                 target: "evaluating",
-                actions: assign({
-                  answers: ({ context, event }) => ({
-                    ...context.answers,
-                    [context.currentNodeId as string]: {
-                      error: (event.error as Error).message,
-                    },
+                actions: [
+                  assign({
+                    answers: ({ context, event }) => ({
+                      ...context.answers,
+                      [context.currentNodeId as string]: {
+                        error: (event.error as Error).message,
+                      },
+                    }),
                   }),
-                }),
+                  "markNodeAsError",
+                ],
               },
             },
           },
 
           executing: {
-            entry: "markNodeAsExecuted",
+            entry: ["markNodeAsExecuted"],
             always: "evaluating",
           },
         },
@@ -203,6 +209,13 @@ export const flowMachine = createMachine(
           useFlowStore
             .getState()
             .setNodeStatus(context.currentNodeId, "executed");
+        }
+      },
+
+      markNodeAsError: ({ context }) => {
+        // Actualiza el status en Zustand
+        if (context.currentNodeId) {
+          useFlowStore.getState().setNodeStatus(context.currentNodeId, "error");
         }
       },
 

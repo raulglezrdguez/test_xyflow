@@ -14,7 +14,7 @@ export function HttpNode({ data, id }: NodeProps<MyNode>) {
 
   const status = nodeData.status || "idle";
 
-  const nodeSelected = useFlowStore((status) => status.nodeSelected);
+  const nodeSelected = useFlowStore((state) => state.nodeSelected);
   const nodeSelectedText = nodeSelected?.id === id ? "text-green-800/80" : null;
 
   const statusStyles = {

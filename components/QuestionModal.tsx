@@ -70,6 +70,7 @@ export function QuestionModal() {
               }
             }}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            autoFocus
           >
             <option id="0">Selecciona una opción...</option>
             {data.options.map((opt) => (
@@ -85,6 +86,7 @@ export function QuestionModal() {
             onChange={(e) => setAnswer(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Escribe tu respuesta..."
+            autoFocus
           />
         )}
 

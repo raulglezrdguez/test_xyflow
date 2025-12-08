@@ -129,25 +129,27 @@ function FlowWithExecution() {
   const nodes = useFlowStore((state) => state.nodes);
   const edges = useFlowStore((state) => state.edges);
   const setNodeSelected = useFlowStore((state) => state.setNodeSelected);
+  const nodeSelected = useFlowStore((state) => state.nodeSelected);
   const setEdgeSelected = useFlowStore((state) => state.setEdgeSelected);
+  const edgeSelected = useFlowStore((state) => state.edgeSelected);
 
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
 
   const handleNodeClick = useCallback(
     (_: React.MouseEvent, node: MyNode) => {
-      setNodeSelected(node);
-      setEdgeSelected(null);
+      if (node.id === nodeSelected?.id) setNodeSelected(null);
+      else setNodeSelected(node);
     },
-    [setNodeSelected, setEdgeSelected]
+    [setNodeSelected, nodeSelected]
   );
 
   const handleEdgeClick = useCallback(
     (_: React.MouseEvent, edge: MyEdge) => {
-      setNodeSelected(null);
-      setEdgeSelected(edge);
+      if (edgeSelected?.id === edge.id) setEdgeSelected(null);
+      else setEdgeSelected(edge);
     },
-    [setNodeSelected, setEdgeSelected]
+    [setEdgeSelected, edgeSelected]
   );
 
   const handlePaneClick = useCallback(

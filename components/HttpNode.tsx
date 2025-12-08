@@ -1,5 +1,6 @@
 "use client";
 
+import { useFlowStore } from "@/store/flowStore";
 // import { useEffect } from "react";
 // import { useSelector } from "@xstate/react";
 // import { useFlowMachine } from "@/contexts/flowMachineContext";
@@ -7,12 +8,14 @@ import type { MyNode, HttpNodeData } from "@/types/flow";
 import { NodeProps, Handle, Position } from "@xyflow/react";
 import { CheckCircle, Clock, Play, XCircle } from "lucide-react";
 
-// export function HttpNode({ data, id }: NodeProps<MyNode>) {
-export function HttpNode({ data }: NodeProps<MyNode>) {
+export function HttpNode({ data, id }: NodeProps<MyNode>) {
   // const actorRef = useFlowMachine();
   const nodeData = data as HttpNodeData;
 
   const status = nodeData.status || "idle";
+
+  const nodeSelected = useFlowStore((status) => status.nodeSelected);
+  const nodeSelectedText = nodeSelected?.id === id ? "text-green-800/80" : null;
 
   const statusStyles = {
     idle: "bg-gray-100 border-gray-400 text-gray-600",
@@ -49,7 +52,7 @@ export function HttpNode({ data }: NodeProps<MyNode>) {
     <div
       className={`relative min-w-48 px-4 py-3 rounded-xl border-2 shadow-md ${statusStyles[status]}`}
     >
-      <div className={`flex flex-col justify-center`}>
+      <div className={`flex flex-col justify-center ${nodeSelectedText}`}>
         <div className="text-sm font-semibold truncate">
           🌐 {nodeData.label}
         </div>

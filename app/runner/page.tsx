@@ -5,6 +5,7 @@ import {
   Background,
   Controls,
   BackgroundVariant,
+  MiniMap,
 } from "@xyflow/react";
 import { useFlowStore } from "@/store/flowStore";
 import { FlowMachineProvider } from "@/contexts/flowMachineContext";
@@ -23,7 +24,7 @@ import {
   OutputNodeData,
   QuestionNodeData,
 } from "@/types/flow";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { InputNode } from "@/components/InputNode";
 import { OutputNode } from "@/components/OutputNode";
 import { QuestionModal } from "@/components/QuestionModal";
@@ -48,15 +49,15 @@ const initialNodes: MyNode[] = [
   {
     id: "II",
     type: "question",
-    position: { x: 300, y: 150 },
+    position: { x: 0, y: 150 },
     data: {
       label: "Pregunta de Edad",
       question: "¿Cuál es tu edad?",
-      // questionType: "number",
-      questionType: "select",
+      questionType: "number",
+      // questionType: "select",
       options: [
-        { id: "1", value: "opcion 1 con mas texto" },
-        { id: "2", value: "opción 2 con un poquito mas de texto todavia" },
+        { id: "1", value: "Adulto menor de 50 años" },
+        { id: "2", value: "Adulto mayor de 50 años" },
       ],
       // options: undefined,
       status: "idle",
@@ -65,7 +66,7 @@ const initialNodes: MyNode[] = [
   {
     id: "III",
     type: "http-request",
-    position: { x: 600, y: 150 },
+    position: { x: 0, y: 450 },
     data: {
       label: "Verificar API",
       endpoint: "http://metaphorpsum.com/paragraphs/2",
@@ -77,45 +78,109 @@ const initialNodes: MyNode[] = [
   {
     id: "IV",
     type: "output",
-    position: { x: 900, y: 0 },
+    position: { x: 0, y: 750 },
     data: {
       label: "Resultado Final",
       result: "Proceso completado",
       status: "idle",
     } as OutputNodeData,
   },
+  {
+    id: "V",
+    type: "question",
+    position: { x: 500, y: 450 },
+    data: {
+      label: "Pregunta de Gustos",
+      question: "¿Qué películas te gustan más?",
+      // questionType: "number",
+      questionType: "select",
+      options: [
+        { id: "1", value: "Comedias" },
+        { id: "2", value: "De acción" },
+        { id: "3", value: "Musicales" },
+      ],
+      // options: undefined,
+      status: "idle",
+    } as QuestionNodeData,
+  },
 ];
 
 const initialEdges: MyEdge[] = [
   { id: "eI-II", source: "I", target: "II" },
-  { id: "eII-III", source: "II", target: "III" },
+  {
+    id: "eII-III",
+    source: "II",
+    target: "III",
+    // data: { condition: "answers['II'].id === '1'" },
+    data: { condition: "answers['II'] < 50" },
+  },
+  {
+    id: "eII-V",
+    source: "II",
+    target: "V",
+    // data: { condition: "answers['II'].id === '2'" },
+    data: { condition: "answers['II'] >= 50" },
+  },
   { id: "eIII-IV", source: "III", target: "IV" },
+  { id: "eV-IV", source: "V", target: "IV" },
 ];
 
 function FlowWithExecution() {
   const nodes = useFlowStore((state) => state.nodes);
   const edges = useFlowStore((state) => state.edges);
+  const setNodeSelected = useFlowStore((state) => state.setNodeSelected);
+  const setEdgeSelected = useFlowStore((state) => state.setEdgeSelected);
+
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
+
+  const handleNodeClick = useCallback(
+    (_: React.MouseEvent, node: MyNode) => {
+      setNodeSelected(node);
+      setEdgeSelected(null);
+    },
+    [setNodeSelected, setEdgeSelected]
+  );
+
+  const handleEdgeClick = useCallback(
+    (_: React.MouseEvent, edge: MyEdge) => {
+      setNodeSelected(null);
+      setEdgeSelected(edge);
+    },
+    [setNodeSelected, setEdgeSelected]
+  );
+
+  const handlePaneClick = useCallback(
+    (_: React.MouseEvent) => {
+      setNodeSelected(null);
+      setEdgeSelected(null);
+    },
+    [setNodeSelected, setEdgeSelected]
+  );
 
   return (
     <div className="w-full h-screen flex flex-col">
       <ExecutionPanel />
 
-      <div className="flex-1">
+      <div className="flex-1  [&_.react-flow__node]:bg-transparent! [&_.react-flow__node]:border-0! [&_.react-flow__node]:p-0! [&_.react-flow__node]:min-w-0!">
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
+          onNodeClick={handleNodeClick}
+          onEdgeClick={handleEdgeClick}
+          onPaneClick={handlePaneClick}
           fitView
+          snapToGrid
         >
           <Background
             color={"#aaa"}
             style={{ background: "#333" }}
             variant={BackgroundVariant.Dots}
           />
+          <MiniMap />
           <Controls />
         </ReactFlow>
       </div>

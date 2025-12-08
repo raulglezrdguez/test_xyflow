@@ -1,10 +1,14 @@
+import { useFlowStore } from "@/store/flowStore";
 import type { MyNode, OutputNodeData } from "@/types/flow";
 import { Handle, NodeProps, Position } from "@xyflow/react";
 import { CheckCircle, Clock, Play, XCircle } from "lucide-react";
 
-export function OutputNode({ data }: NodeProps<MyNode>) {
+export function OutputNode({ data, id }: NodeProps<MyNode>) {
   const nodeData = data as OutputNodeData;
   const status = nodeData.status || "idle";
+
+  const nodeSelected = useFlowStore((status) => status.nodeSelected);
+  const nodeSelectedText = nodeSelected?.id === id ? "text-green-800/80" : null;
 
   const statusStyles = {
     idle: "bg-gray-100 border-gray-400 text-gray-600",
@@ -25,7 +29,7 @@ export function OutputNode({ data }: NodeProps<MyNode>) {
       className={`relative min-w-48 px-4 py-3 rounded-xl border-2 shadow-md ${statusStyles[status]}`}
     >
       <Handle type="target" position={Position.Top} />
-      <div className={`flex justify-center`}>
+      <div className={`flex justify-center ${nodeSelectedText}`}>
         <div className="text-sm font-semibold truncate">
           {`${nodeData.result}` || "N/A"}
         </div>

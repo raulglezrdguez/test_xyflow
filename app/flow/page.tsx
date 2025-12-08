@@ -10,6 +10,7 @@ import {
   BackgroundVariant,
   Connection,
   MiniMap,
+  Controls,
 } from "@xyflow/react";
 import { useCallback, useState } from "react";
 import { MyNode, MyEdge } from "@/types/flow";
@@ -17,13 +18,17 @@ import "@xyflow/react/dist/style.css";
 import "./styles.css";
 
 import { InputNode } from "@/components/InputNode";
-import { DefaultNode } from "@/components/DefaultNode";
 import { OutputNode } from "@/components/OutputNode";
 import { AddNodePanel } from "@/components/AddNodePanel";
+import { QuestionNode } from "@/components/QuestionNode";
+import { HttpNode } from "@/components/HttpNode";
+import { useFlowStore } from "@/store/flowStore";
+import { handleBuildComplete } from "next/dist/build/adapter/build-complete";
 
 const nodeTypes = {
   input: InputNode,
-  default: DefaultNode,
+  question: QuestionNode,
+  "http-request": HttpNode,
   output: OutputNode,
 };
 
@@ -59,6 +64,9 @@ const initialEdges: MyEdge[] = [
 ];
 
 export default function FlowPage() {
+  const setNodeSelected = useFlowStore((status) => status.setNodeSelected);
+  const setEdgeSelected = useFlowStore((status) => status.setEdgeSelected);
+
   const [nodes, setNodes] = useState<MyNode[]>(initialNodes);
   const [edges, setEdges] = useState<MyEdge[]>(initialEdges);
 
@@ -88,9 +96,29 @@ export default function FlowPage() {
     [setEdges]
   );
 
-  const onNodeClick = useCallback((_: React.MouseEvent, node: MyNode) => {
-    console.log("Nodo clickeado:", node.position);
-  }, []);
+  const handleNodeClick = useCallback(
+    (_: React.MouseEvent, node: MyNode) => {
+      setNodeSelected(node);
+      setEdgeSelected(null);
+    },
+    [setNodeSelected, setEdgeSelected]
+  );
+
+  const handleEdgeClick = useCallback(
+    (_: React.MouseEvent, edge: MyEdge) => {
+      setNodeSelected(null);
+      setEdgeSelected(edge);
+    },
+    [setNodeSelected, setEdgeSelected]
+  );
+
+  const handlePaneClick = useCallback(
+    (_: React.MouseEvent) => {
+      setNodeSelected(null);
+      setEdgeSelected(null);
+    },
+    [setNodeSelected, setEdgeSelected]
+  );
 
   //   const onNodeDragStop = useCallback((_: React.MouseEvent, node: MyNode) => {
   //     console.log("Nodo arrastrado:", node);
@@ -154,8 +182,11 @@ export default function FlowPage() {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          onNodeClick={onNodeClick}
+          onNodeClick={handleNodeClick}
+          onEdgeClick={handleEdgeClick}
           fitView
+          snapToGrid
+          onPaneClick={handlePaneClick}
         >
           <Background
             color="#1a1a1a"
@@ -163,6 +194,7 @@ export default function FlowPage() {
             style={{ background: "#494949" }}
           />
           <MiniMap />
+          <Controls />
           <AddNodePanel setNodes={setNodes} nodes={nodes} />
         </ReactFlow>
       </div>

@@ -9,6 +9,8 @@ type FlowStore = {
   answers: Record<string, unknown>;
   currentNodeId: string | null;
   executionStatus: "idle" | "running" | "paused" | "completed";
+  nodeSelected: MyNode | null;
+  edgeSelected: MyEdge | null;
 
   // Acciones del diagrama
   setNodes: (nodes: MyNode[] | ((nds: MyNode[]) => MyNode[])) => void;
@@ -23,6 +25,8 @@ type FlowStore = {
   setExecutionStatus: (
     status: "idle" | "running" | "paused" | "completed"
   ) => void;
+  setNodeSelected: (node: MyNode | null) => void;
+  setEdgeSelected: (node: MyEdge | null) => void;
 };
 
 export const useFlowStore = create<FlowStore>()((set) => ({
@@ -31,6 +35,8 @@ export const useFlowStore = create<FlowStore>()((set) => ({
   answers: {},
   currentNodeId: null,
   executionStatus: "idle",
+  nodeSelected: null,
+  edgeSelected: null,
 
   setNodes: (nodes) =>
     set(
@@ -67,4 +73,7 @@ export const useFlowStore = create<FlowStore>()((set) => ({
     })),
 
   setExecutionStatus: (status) => set({ executionStatus: status }),
+
+  setNodeSelected: (node) => set({ nodeSelected: node }),
+  setEdgeSelected: (edge) => set({ edgeSelected: edge }),
 }));

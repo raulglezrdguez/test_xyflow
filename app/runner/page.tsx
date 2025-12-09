@@ -12,11 +12,14 @@ import { FlowMachineProvider } from "@/contexts/flowMachineContext";
 import { ExecutionPanel } from "@/components/ExecutionPanel";
 import { QuestionNode } from "@/components/QuestionNode";
 import { HttpNode } from "@/components/HttpNode";
+import { GeminiNode } from "@/components/GeminiNode";
 
 import "@xyflow/react/dist/style.css";
 import "./styles.css";
 
 import {
+  GeminiInfoNodeData,
+  GeminiNodeData,
   HttpNodeData,
   InputNodeData,
   MyEdge,
@@ -28,11 +31,14 @@ import { useCallback, useEffect, useState } from "react";
 import { InputNode } from "@/components/InputNode";
 import { OutputNode } from "@/components/OutputNode";
 import { QuestionModal } from "@/components/QuestionModal";
+import { GeminiInfoNode } from "@/components/GeminiInfoNode";
 
 const nodeTypes = {
   input: InputNode,
   question: QuestionNode,
   "http-request": HttpNode,
+  "gemini-info": GeminiInfoNode,
+  gemini: GeminiNode,
   output: OutputNode,
 };
 
@@ -88,7 +94,7 @@ const initialNodes: MyNode[] = [
   {
     id: "V",
     type: "question",
-    position: { x: 500, y: 450 },
+    position: { x: 500, y: 150 },
     data: {
       label: "Pregunta de Gustos",
       question: "¿Qué películas te gustan más?",
@@ -102,6 +108,28 @@ const initialNodes: MyNode[] = [
       // options: undefined,
       status: "idle",
     } as QuestionNodeData,
+  },
+  {
+    id: "VI",
+    type: "gemini",
+    position: { x: 500, y: 550 },
+    data: {
+      label: "Resumen de Gemini",
+      prompt:
+        "Resume las preferencias de películas: {{V.value}}, para una persona de {{II}} años.",
+      model: "gemini-2.5-flash",
+      temperature: 0.7,
+      status: "idle",
+    } as GeminiNodeData,
+  },
+  {
+    id: "VII",
+    type: "gemini-info",
+    position: { x: 500, y: 350 },
+    data: {
+      label: "Info de Gemini",
+      status: "idle",
+    } as GeminiInfoNodeData,
   },
 ];
 
@@ -122,7 +150,9 @@ const initialEdges: MyEdge[] = [
     data: { condition: "answers['II'] >= 50" },
   },
   { id: "eIII-IV", source: "III", target: "IV" },
-  { id: "eV-IV", source: "V", target: "IV" },
+  { id: "eV-VII", source: "V", target: "VII" },
+  { id: "eVII-VI", source: "VII", target: "VI" },
+  { id: "eVI-IV", source: "VI", target: "IV" },
 ];
 
 function FlowWithExecution() {

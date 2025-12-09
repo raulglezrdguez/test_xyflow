@@ -1,4 +1,4 @@
-// machines/flowMachine.ts
+import Handlebars from "handlebars";
 import { createMachine, assign, fromPromise } from "xstate";
 import type { MyNode, MyEdge } from "@/types/flow";
 import { useFlowStore } from "@/store/flowStore";
@@ -29,6 +29,62 @@ const httpActor = fromPromise(
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return input.responseType === "text" ? response.text() : response.json();
+  }
+);
+
+const geminiActor = fromPromise(
+  async ({
+    input,
+  }: {
+    input: {
+      prompt: string;
+      model: string;
+      temperature?: number;
+      answers: Record<string, unknown>;
+    };
+  }) => {
+    const geminiApikey = localStorage.getItem("gemini-apikey")
+      ? atob(localStorage.getItem("gemini-apikey") as string)
+      : null;
+    if (!geminiApikey) throw new Error("Gemini API key not configured");
+
+    const template = Handlebars.compile(input.prompt);
+    const filledPrompt = template(input.answers);
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${input.model}:generateContent`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": geminiApikey,
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: filledPrompt,
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: input.temperature ?? 0.7,
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(
+        `Gemini API error: ${error.error?.message || response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
   }
 );
 
@@ -65,6 +121,7 @@ export const flowMachine = createMachine(
               { target: "executing", guard: "isAutoExecutableNode" },
               { target: "waitingInput", guard: "isQuestionNode" },
               { target: "processingHttp", guard: "isHttpNode" },
+              { target: "processingGemini", guard: "isGeminiNode" },
               { target: "#flowExecution.completed", guard: "noMoreNodes" },
             ],
           },
@@ -75,10 +132,16 @@ export const flowMachine = createMachine(
                 target: "evaluating",
                 actions: [
                   assign({
-                    answers: ({ context, event }) => ({
-                      ...context.answers,
-                      [event.nodeId]: event.answer,
-                    }),
+                    answers: ({ context, event }) => {
+                      return event.answer
+                        ? {
+                            ...context.answers,
+                            [event.nodeId]: event.answer,
+                          }
+                        : {
+                            ...context.answers,
+                          };
+                    },
                   }),
                   "markNodeAsExecuted",
                 ],
@@ -130,6 +193,51 @@ export const flowMachine = createMachine(
             },
           },
 
+          processingGemini: {
+            invoke: {
+              src: geminiActor,
+              input: ({ context }) => {
+                const node = context.nodes.find(
+                  (n) => n.id === context.currentNodeId
+                );
+                if (!node || node.type !== "gemini")
+                  throw new Error("Invalid node");
+                return {
+                  prompt: node.data.prompt,
+                  model: node.data.model,
+                  temperature: node.data.temperature,
+                  answers: context.answers,
+                };
+              },
+              onDone: {
+                target: "evaluating",
+                actions: [
+                  assign({
+                    answers: ({ context, event }) => ({
+                      ...context.answers,
+                      [context.currentNodeId as string]: event.output,
+                    }),
+                  }),
+                  "markNodeAsExecuted",
+                ],
+              },
+              onError: {
+                target: "evaluating",
+                actions: [
+                  assign({
+                    answers: ({ context, event }) => ({
+                      ...context.answers,
+                      [context.currentNodeId as string]: {
+                        error: (event.error as Error).message,
+                      },
+                    }),
+                  }),
+                  "markNodeAsError",
+                ],
+              },
+            },
+          },
+
           executing: {
             entry: ["markNodeAsExecuted"],
             always: "evaluating",
@@ -150,11 +258,15 @@ export const flowMachine = createMachine(
       },
       isQuestionNode: ({ context }) => {
         const node = context.nodes.find((n) => n.id === context.currentNodeId);
-        return node?.type === "question";
+        return node?.type === "question" || node?.type === "gemini-info";
       },
       isHttpNode: ({ context }) => {
         const node = context.nodes.find((n) => n.id === context.currentNodeId);
         return node?.type === "http-request";
+      },
+      isGeminiNode: ({ context }) => {
+        const node = context.nodes.find((n) => n.id === context.currentNodeId);
+        return node?.type === "gemini";
       },
       isOutputNode: ({ context }) => {
         const node = context.nodes.find((n) => n.id === context.currentNodeId);

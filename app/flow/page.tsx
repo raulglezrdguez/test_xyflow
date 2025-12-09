@@ -22,12 +22,16 @@ import { OutputNode } from "@/components/OutputNode";
 import { AddNodePanel } from "@/components/AddNodePanel";
 import { QuestionNode } from "@/components/QuestionNode";
 import { HttpNode } from "@/components/HttpNode";
+import { GeminiNode } from "@/components/GeminiNode";
 import { useFlowStore } from "@/store/flowStore";
+import { GeminiInfoNode } from "@/components/GeminiInfoNode";
 
 const nodeTypes = {
   input: InputNode,
   question: QuestionNode,
   "http-request": HttpNode,
+  "gemini-info": GeminiInfoNode,
+  gemini: GeminiNode,
   output: OutputNode,
 };
 

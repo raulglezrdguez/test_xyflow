@@ -33,10 +33,14 @@ export interface QuestionNodeData extends MyNodeDataRoot {
   status?: NodeStatus;
 }
 
+export const HTTP_METHODS = ["GET", "POST", "PUT", "DELETE"];
+export const RESPONSE_TYPES = ["json", "text"];
+export type HttpMethod = (typeof HTTP_METHODS)[number];
+export type ResponseType = (typeof RESPONSE_TYPES)[number];
 export interface HttpNodeData extends MyNodeDataRoot {
   endpoint: string;
-  method: "GET" | "POST";
-  responseType: "json" | "text";
+  method: HttpMethod;
+  responseType: ResponseType;
   status?: NodeStatus;
   response?: unknown;
 }

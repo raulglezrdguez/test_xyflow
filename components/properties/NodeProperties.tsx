@@ -1,6 +1,7 @@
 import { MyNode } from "@/types/flow";
 import InputNodeProperties from "./InputNodeProperties";
 import QuestionNodeProperties from "./QuestionNodeProperties";
+import HttpNodeProperties from "./HttpNodeProperties";
 
 type Props = { node: MyNode | null };
 
@@ -11,6 +12,8 @@ const NodeProperties = ({ node }: Props) => {
     return <InputNodeProperties id={node.id} data={node.data} />;
   if (node.type === "question")
     return <QuestionNodeProperties id={node.id} data={node.data} />;
+  if (node.type === "http-request")
+    return <HttpNodeProperties id={node.id} data={node.data} />;
 
   return <div className="text-sm">Node Properties</div>;
 };

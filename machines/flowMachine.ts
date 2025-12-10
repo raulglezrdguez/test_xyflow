@@ -68,7 +68,7 @@ const geminiActor = fromPromise(
             },
           ],
           generationConfig: {
-            temperature: input.temperature ?? 0.7,
+            temperature: input.temperature ?? 1.0,
           },
         }),
       }

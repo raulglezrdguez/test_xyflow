@@ -41,7 +41,7 @@ const HttpNodeProperties = ({ data, id }: Props) => {
     <div className="flex flex-col border rounded-2xl px-4 py-2">
       <h2 className="text-gray-700">HTTP Node {id}</h2>
       <hr />
-      <label htmlFor="question" className="hover:cursor-pointer">
+      <label htmlFor="endpoint" className="hover:cursor-pointer">
         <p className="block text-sm m-2">Endpoint:</p>
         <input
           id="endpoint"

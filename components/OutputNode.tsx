@@ -31,7 +31,7 @@ export function OutputNode({ data, id }: NodeProps<MyNode>) {
       <Handle type="target" position={Position.Top} />
       <div className={`flex justify-center ${nodeSelectedText}`}>
         <div className="text-sm font-semibold truncate">
-          {`${nodeData.result}` || "N/A"}
+          {`${nodeData.label}` || "N/A"}
         </div>
         <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full border border-gray-600 flex items-center justify-center shadow-sm">
           <StatusIcon size={14} />

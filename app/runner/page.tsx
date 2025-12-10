@@ -119,7 +119,7 @@ const initialNodes: MyNode[] = [
       prompt:
         "Resume las preferencias de películas: {{V.value}}, para una persona de {{II}} años.",
       model: "gemini-2.5-flash",
-      temperature: 0.7,
+      temperature: 1.0,
       status: "idle",
     } as GeminiNodeData,
   },

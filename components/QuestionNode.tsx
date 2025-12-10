@@ -32,6 +32,8 @@ export function QuestionNode({ data, id }: NodeProps<MyNode>) {
       className={`relative min-w-48 px-4 py-3 rounded-xl border-2 shadow-md ${statusStyles[status]}`}
     >
       <div className={`flex flex-col justify-center ${nodeSelectedText}`}>
+        <div className="text-sm font-semibold truncate">{nodeData.label}</div>
+
         <div className="text-sm font-semibold truncate">
           {nodeData.question}
         </div>

@@ -4,8 +4,6 @@ import type { MyNode, MyEdge } from "@/types/flow";
 import { useFlowStore } from "@/store/flowStore";
 
 interface FlowContext {
-  nodes: MyNode[];
-  edges: MyEdge[];
   currentNodeId: string | null;
   answers: Record<string, unknown>;
 }
@@ -99,9 +97,7 @@ export const flowMachine = createMachine(
       input: {} as { nodes: MyNode[]; edges: MyEdge[] },
     },
 
-    context: ({ input }) => ({
-      nodes: input.nodes,
-      edges: input.edges,
+    context: () => ({
       currentNodeId: null,
       answers: {},
     }),
@@ -153,9 +149,9 @@ export const flowMachine = createMachine(
             invoke: {
               src: httpActor,
               input: ({ context }) => {
-                const node = context.nodes.find(
-                  (n) => n.id === context.currentNodeId
-                );
+                const node = useFlowStore
+                  .getState()
+                  .nodes.find((n) => n.id === context.currentNodeId);
                 if (!node || node.type !== "http-request")
                   throw new Error("Invalid node");
                 return {
@@ -197,9 +193,9 @@ export const flowMachine = createMachine(
             invoke: {
               src: geminiActor,
               input: ({ context }) => {
-                const node = context.nodes.find(
-                  (n) => n.id === context.currentNodeId
-                );
+                const node = useFlowStore
+                  .getState()
+                  .nodes.find((n) => n.id === context.currentNodeId);
                 if (!node || node.type !== "gemini")
                   throw new Error("Invalid node");
                 return {
@@ -253,23 +249,33 @@ export const flowMachine = createMachine(
   {
     guards: {
       isAutoExecutableNode: ({ context }) => {
-        const node = context.nodes.find((n) => n.id === context.currentNodeId);
+        const node = useFlowStore
+          .getState()
+          .nodes.find((n) => n.id === context.currentNodeId);
         return node?.type === "input" || node?.type === "output";
       },
       isQuestionNode: ({ context }) => {
-        const node = context.nodes.find((n) => n.id === context.currentNodeId);
+        const node = useFlowStore
+          .getState()
+          .nodes.find((n) => n.id === context.currentNodeId);
         return node?.type === "question" || node?.type === "gemini-info";
       },
       isHttpNode: ({ context }) => {
-        const node = context.nodes.find((n) => n.id === context.currentNodeId);
+        const node = useFlowStore
+          .getState()
+          .nodes.find((n) => n.id === context.currentNodeId);
         return node?.type === "http-request";
       },
       isGeminiNode: ({ context }) => {
-        const node = context.nodes.find((n) => n.id === context.currentNodeId);
+        const node = useFlowStore
+          .getState()
+          .nodes.find((n) => n.id === context.currentNodeId);
         return node?.type === "gemini";
       },
       isOutputNode: ({ context }) => {
-        const node = context.nodes.find((n) => n.id === context.currentNodeId);
+        const node = useFlowStore
+          .getState()
+          .nodes.find((n) => n.id === context.currentNodeId);
         return node?.type === "output";
       },
       noMoreNodes: ({ context }) => {
@@ -283,14 +289,16 @@ export const flowMachine = createMachine(
         let nextNodeId: string | null = null;
 
         if (!currentNodeId) {
-          const startNode = context.nodes.find((n) => n.type === "input");
+          const startNode = useFlowStore
+            .getState()
+            .nodes.find((n) => n.type === "input");
           return { currentNodeId: startNode?.id || null };
         }
 
         // Lógica para encontrar siguiente nodo basado en condiciones
-        const connectedEdges = context.edges.filter(
-          (e) => e.source === currentNodeId
-        );
+        const connectedEdges = useFlowStore
+          .getState()
+          .edges.filter((e) => e.source === currentNodeId);
 
         for (const edge of connectedEdges) {
           if (edge.data?.condition) {

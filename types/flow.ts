@@ -8,7 +8,8 @@ export type MyNodeType =
   | "gemini"
   | "output";
 export type NodeStatus = "idle" | "running" | "executed" | "error";
-export type QuestionType = "text" | "select" | "number";
+export const QUESTION_TYPES = ["text", "select", "number"];
+export type QuestionType = (typeof QUESTION_TYPES)[number];
 export type QuestionOption = { id: string; value: string };
 export const GEMINI_MODELS = [
   "gemini-2.5-flash",

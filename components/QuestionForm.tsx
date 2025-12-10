@@ -26,6 +26,8 @@ const QuestionForm = ({
     setAnswer("");
   };
 
+  console.log(currentQuestion);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-xl p-6 w-96 shadow-2xl">

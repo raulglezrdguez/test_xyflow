@@ -32,6 +32,7 @@ import { InputNode } from "@/components/InputNode";
 import { OutputNode } from "@/components/OutputNode";
 import { QuestionModal } from "@/components/QuestionModal";
 import { GeminiInfoNode } from "@/components/GeminiInfoNode";
+import Properties from "@/components/properties/Properties";
 
 const nodeTypes = {
   input: InputNode,
@@ -194,27 +195,30 @@ function FlowWithExecution() {
     <div className="w-full h-screen flex flex-col">
       <ExecutionPanel />
 
-      <div className="flex-1  [&_.react-flow__node]:bg-transparent! [&_.react-flow__node]:border-0! [&_.react-flow__node]:p-0! [&_.react-flow__node]:min-w-0!">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          nodeTypes={nodeTypes}
-          onNodeClick={handleNodeClick}
-          onEdgeClick={handleEdgeClick}
-          onPaneClick={handlePaneClick}
-          fitView
-          snapToGrid
-        >
-          <Background
-            color={"#aaa"}
-            style={{ background: "#333" }}
-            variant={BackgroundVariant.Dots}
-          />
-          <MiniMap />
-          <Controls />
-        </ReactFlow>
+      <div className="flex flex-row flex-1">
+        <div className="flex-1  [&_.react-flow__node]:bg-transparent! [&_.react-flow__node]:border-0! [&_.react-flow__node]:p-0! [&_.react-flow__node]:min-w-0!">
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            nodeTypes={nodeTypes}
+            onNodeClick={handleNodeClick}
+            onEdgeClick={handleEdgeClick}
+            onPaneClick={handlePaneClick}
+            fitView
+            snapToGrid
+          >
+            <Background
+              color={"#aaa"}
+              style={{ background: "#333" }}
+              variant={BackgroundVariant.Dots}
+            />
+            <MiniMap />
+            <Controls />
+          </ReactFlow>
+        </div>
+        <Properties />
       </div>
 
       <QuestionModal />

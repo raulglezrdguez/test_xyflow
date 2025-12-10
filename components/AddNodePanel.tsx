@@ -5,9 +5,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Panel, Node } from "@xyflow/react";
 import type {
   MyNode,
-  MyNodeDataDefault,
-  MyNodeDataInput,
-  MyNodeDataOutput,
+  InputNodeData,
+  QuestionNodeData,
+  HttpNodeData,
+  GeminiInfoNodeData,
+  GeminiNodeData,
+  OutputNodeData,
 } from "@/types/flow";
 
 export function AddNodePanel({
@@ -43,7 +46,7 @@ export function AddNodePanel({
   }, [nodes]);
 
   const handleAddInput = useCallback(() => {
-    const newNode: Node<MyNodeDataInput, "input"> = {
+    const newNode: Node<InputNodeData, "input"> = {
       id: `${Date.now()}`,
       type: "input",
       position: { x: position.x, y: position.y },
@@ -51,33 +54,6 @@ export function AddNodePanel({
         label: "Nuevo Input",
         value: 123,
         description: "Entrada de datos",
-        status: "idle",
-      },
-    };
-    setNodes((nds) => [...nds, newNode]);
-  }, [position, setNodes]);
-
-  const handleAddDefault = useCallback(() => {
-    const newNode: Node<MyNodeDataDefault, "default"> = {
-      id: `${Date.now()}`,
-      type: "default",
-      position: { x: position.x, y: position.y },
-      data: {
-        variable: "Nuevo Default",
-        operator: 123,
-        status: "idle",
-      },
-    };
-    setNodes((nds) => [...nds, newNode]);
-  }, [position, setNodes]);
-
-  const handleAddOutput = useCallback(() => {
-    const newNode: Node<MyNodeDataOutput, "output"> = {
-      id: `${Date.now()}`,
-      type: "output",
-      position: { x: position.x, y: position.y },
-      data: {
-        result: "Nuevo Result",
         status: "idle",
       },
     };
@@ -94,18 +70,6 @@ export function AddNodePanel({
         className="px-3 py-1 bg-green-500 text-white rounded"
       >
         + Input
-      </button>
-      <button
-        onClick={handleAddDefault}
-        className="px-3 py-1 bg-blue-500 text-white rounded"
-      >
-        + Default
-      </button>
-      <button
-        onClick={handleAddOutput}
-        className="px-3 py-1 bg-yellow-500 text-white rounded"
-      >
-        + Output
       </button>
     </Panel>
   );

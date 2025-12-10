@@ -29,6 +29,7 @@ type FlowStore = {
   setEdgeSelected: (node: MyEdge | null) => void;
 
   updateNodeData: (nodeId: string, data: object) => void;
+  updateEdgeData: (edgeId: string, data: object) => void;
 };
 
 export const useFlowStore = create<FlowStore>()((set) => ({
@@ -84,6 +85,14 @@ export const useFlowStore = create<FlowStore>()((set) => ({
       nodes: state.nodes.map((n) => {
         if (n.id !== nodeId) return n;
         return { ...n, data: { ...n.data, ...data } } as MyNode;
+      }),
+    })),
+
+  updateEdgeData: (edgeId, data) =>
+    set((state) => ({
+      edges: state.edges.map((e) => {
+        if (e.id !== edgeId) return e;
+        return { ...e, data: { ...e.data, ...data } } as MyEdge;
       }),
     })),
 }));

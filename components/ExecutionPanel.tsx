@@ -14,7 +14,7 @@ export function ExecutionPanel() {
   // Estado idle: muestra botón de inicio
   if (snapshot.value === "idle") {
     return (
-      <div className="p-4 bg-white shadow-lg rounded-lg">
+      <div id="execution-panel" className="p-4 bg-white shadow-lg rounded-lg">
         <Button
           onClick={() => {
             if (startNode) {
@@ -33,7 +33,7 @@ export function ExecutionPanel() {
   if (snapshot.value === "running") {
     // No renderizar nada - el modal aparece automáticamente cuando detecta una pregunta
     return (
-      <div className="p-4 bg-blue-50 shadow-lg rounded-lg">
+      <div id="execution-panel" className="p-4 bg-blue-50 shadow-lg rounded-lg">
         <p className="text-sm text-blue-700">
           ⏳ Ejecutando nodo: {snapshot.context.currentNodeId || "Iniciando..."}
         </p>
@@ -44,7 +44,10 @@ export function ExecutionPanel() {
   // Estado completed: muestra resultados
   if (snapshot.value === "completed") {
     return (
-      <div className="p-4 bg-green-100 shadow-lg rounded-lg">
+      <div
+        id="execution-panel"
+        className="p-4 bg-green-100 shadow-lg rounded-lg"
+      >
         <h2 className="font-bold mb-2">✅ Ejecución Completada</h2>
         <pre className="text-xs bg-white p-2 rounded text-wrap">
           {JSON.stringify(snapshot.context.answers, null, 2)}

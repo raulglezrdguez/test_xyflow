@@ -1,4 +1,4 @@
-import { DragEvent, JSX, useState } from "react";
+import { DragEvent, JSX } from "react";
 
 import {
   StartNodeIcon,
@@ -14,8 +14,6 @@ import { MyNodeType } from "@/types/flow";
  * Paleta de Nodos Arrastrables para React Flow.
  */
 export default function NodePalette(): JSX.Element {
-  const [draggedType, setDraggedType] = useState<MyNodeType | null>(null);
-
   /**
    * Maneja el inicio del arrastre para React Flow.
    * Establece el tipo de nodo en el dataTransfer para ser leído por onDrop en el canvas.
@@ -28,14 +26,9 @@ export default function NodePalette(): JSX.Element {
   ) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "copy";
-    console.log(nodeType);
-    setDraggedType(nodeType);
   };
 
-  const onDragEnd = () => {
-    console.log("Drag End:");
-    setDraggedType(null);
-  };
+  const onDragEnd = () => {};
 
   return (
     <div className="p-4 border border-gray-500 rounded-lg">

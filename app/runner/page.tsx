@@ -225,6 +225,11 @@ function FlowWithExecution() {
     [screenToFlowPosition, addNode]
   );
 
+  const handleNodesDelete = useCallback(() => {
+    setNodeSelected(null);
+    setEdgeSelected(null);
+  }, [setNodeSelected, setEdgeSelected]);
+
   return (
     <div className="w-full h-screen flex flex-col">
       <ExecutionPanel />
@@ -245,6 +250,7 @@ function FlowWithExecution() {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
             onDragLeave={handleDragLeave}
+            onNodesDelete={handleNodesDelete}
           >
             <Background
               color={"#aaa"}

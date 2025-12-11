@@ -34,7 +34,7 @@ type FlowStore = {
   setNodeSelected: (node: MyNode | null) => void;
   setEdgeSelected: (node: MyEdge | null) => void;
 
-  updateNodeData: (nodeId: string, data: object) => void;
+  updateNodeData: (nodeId: string, newNodeId: string, data: object) => void;
   updateEdgeData: (edgeId: string, data: object) => void;
 
   addNode: (params: { type: MyNodeType; position: XYPosition }) => void;
@@ -88,11 +88,21 @@ export const useFlowStore = create<FlowStore>()((set) => ({
   setNodeSelected: (node) => set({ nodeSelected: node }),
   setEdgeSelected: (edge) => set({ edgeSelected: edge }),
 
-  updateNodeData: (nodeId, data) =>
+  updateNodeData: (nodeId, newNodeId, data) =>
     set((state) => ({
       nodes: state.nodes.map((n) => {
         if (n.id !== nodeId) return n;
-        return { ...n, data: { ...n.data, ...data } } as MyNode;
+        return { ...n, id: newNodeId, data: { ...n.data, ...data } } as MyNode;
+      }),
+      edges: state.edges.map((e) => {
+        const updatedEdge = { ...e };
+        if (e.source === nodeId) {
+          updatedEdge.source = newNodeId;
+        }
+        if (e.target === nodeId) {
+          updatedEdge.target = newNodeId;
+        }
+        return updatedEdge;
       }),
     })),
 

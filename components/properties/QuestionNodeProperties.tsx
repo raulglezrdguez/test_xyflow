@@ -16,6 +16,7 @@ type Props = { data: QuestionNodeData | null; id: string };
 const QuestionNodeProperties = ({ data, id }: Props) => {
   const updateNodeData = useFlowStore((state) => state.updateNodeData);
 
+  const [nodeId, setNodeId] = useState<string>(id || "");
   const [question, setQuestion] = useState<string>(data?.question || "");
   const [questionType, setQuestionType] = useState<string>(
     data?.questionType || ""
@@ -36,7 +37,7 @@ const QuestionNodeProperties = ({ data, id }: Props) => {
   if (!data) return null;
 
   const handleSave = () => {
-    updateNodeData(id, { question, questionType, options });
+    updateNodeData(id, nodeId, { question, questionType, options });
   };
 
   const setOption = (id: string, newId: string, newValue: string) => {
@@ -67,6 +68,19 @@ const QuestionNodeProperties = ({ data, id }: Props) => {
     <div className="flex flex-col border rounded-2xl px-4 py-2">
       <h2 className="text-gray-700">Question Node {id}</h2>
       <hr />
+      <label htmlFor="nodeId" className="hover:cursor-pointer">
+        <p className="block text-sm m-2">Node Id:</p>
+        <input
+          id="nodeId"
+          name="nodeId"
+          type="text"
+          placeholder="nodeId..."
+          required
+          value={nodeId}
+          onChange={(e) => setNodeId(e.target.value)}
+          className="text-sm text-gray-600 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
+        />
+      </label>
       <label htmlFor="question" className="hover:cursor-pointer">
         <p className="block text-sm m-2">Question:</p>
         <input

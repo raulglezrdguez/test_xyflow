@@ -116,7 +116,7 @@ export const useFlowStore = create<FlowStore>()((set) => ({
 
   addNode: ({ type, position }) =>
     set((state) => {
-      const id = `${Date.now()}`;
+      const id = `${Math.random().toString(36).substring(2)}`;
       const defaultData = getNodeDataByType(type);
 
       const newNode: MyNode = {

@@ -23,9 +23,7 @@ const NodeIconWrapper = ({ color, children, label }: NodeIconWrapperProps) => {
       >
         {children}
       </div>
-      <small style={{ marginTop: "8px", fontSize: "12px", color: "#555" }}>
-        {label}
-      </small>
+      <small className="mt-2 text-xs text-gray-600">{label}</small>
     </div>
   );
 };

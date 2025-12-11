@@ -172,6 +172,7 @@ function FlowWithExecution() {
 
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
+  const onConnect = useFlowStore((state) => state.onConnect);
 
   const addNode = useFlowStore((state) => state.addNode);
 
@@ -215,6 +216,10 @@ function FlowWithExecution() {
       ) as MyNodeType;
       if (!type) return;
 
+      if (type === "input" && nodes.find((n) => n.type === "input")) {
+        return;
+      }
+
       const position = screenToFlowPosition({
         x: e.clientX,
         y: e.clientY,
@@ -222,13 +227,17 @@ function FlowWithExecution() {
 
       addNode({ type, position });
     },
-    [screenToFlowPosition, addNode]
+    [screenToFlowPosition, addNode, nodes]
   );
 
   const handleNodesDelete = useCallback(() => {
     setNodeSelected(null);
     setEdgeSelected(null);
   }, [setNodeSelected, setEdgeSelected]);
+
+  const handleEdgesDelete = useCallback(() => {
+    setEdgeSelected(null);
+  }, [setEdgeSelected]);
 
   return (
     <div className="w-full h-screen flex flex-col">
@@ -241,6 +250,7 @@ function FlowWithExecution() {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
             nodeTypes={nodeTypes}
             onNodeClick={handleNodeClick}
             onEdgeClick={handleEdgeClick}
@@ -251,6 +261,7 @@ function FlowWithExecution() {
             onDrop={handleDrop}
             onDragLeave={handleDragLeave}
             onNodesDelete={handleNodesDelete}
+            onEdgesDelete={handleEdgesDelete}
           >
             <Background
               color={"#aaa"}

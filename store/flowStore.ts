@@ -1,7 +1,13 @@
 import { create } from "zustand";
-import type { MyNode, MyEdge } from "@/types/flow";
+import type { MyNode, MyEdge, MyNodeType } from "@/types/flow";
 import { applyNodeChanges, applyEdgeChanges, addEdge } from "@xyflow/react";
-import type { NodeChange, EdgeChange, Connection } from "@xyflow/react";
+import type {
+  NodeChange,
+  EdgeChange,
+  Connection,
+  XYPosition,
+} from "@xyflow/react";
+import { getNodeDataByType } from "@/lib/nodeDataGenerator";
 
 type FlowStore = {
   nodes: MyNode[];
@@ -30,6 +36,8 @@ type FlowStore = {
 
   updateNodeData: (nodeId: string, data: object) => void;
   updateEdgeData: (edgeId: string, data: object) => void;
+
+  addNode: (params: { type: MyNodeType; position: XYPosition }) => void;
 };
 
 export const useFlowStore = create<FlowStore>()((set) => ({
@@ -95,4 +103,19 @@ export const useFlowStore = create<FlowStore>()((set) => ({
         return { ...e, data: { ...e.data, ...data } } as MyEdge;
       }),
     })),
+
+  addNode: ({ type, position }) =>
+    set((state) => {
+      const id = `${Date.now()}`;
+      const defaultData = getNodeDataByType(type);
+
+      const newNode: MyNode = {
+        id,
+        type,
+        position,
+        data: { ...defaultData },
+      } as MyNode;
+
+      return { nodes: [...state.nodes, newNode] };
+    }),
 }));

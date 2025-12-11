@@ -6,6 +6,8 @@ import {
   Controls,
   BackgroundVariant,
   MiniMap,
+  useReactFlow,
+  ReactFlowProvider,
 } from "@xyflow/react";
 import { useFlowStore } from "@/store/flowStore";
 import { FlowMachineProvider } from "@/contexts/flowMachineContext";
@@ -24,10 +26,11 @@ import {
   InputNodeData,
   MyEdge,
   MyNode,
+  MyNodeType,
   OutputNodeData,
   QuestionNodeData,
 } from "@/types/flow";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { InputNode } from "@/components/InputNode";
 import { OutputNode } from "@/components/OutputNode";
 import { QuestionModal } from "@/components/QuestionModal";
@@ -157,6 +160,9 @@ const initialEdges: MyEdge[] = [
 ];
 
 function FlowWithExecution() {
+  const { screenToFlowPosition } = useReactFlow();
+  // const wrapperRef = useRef<HTMLDivElement>(null);
+
   const nodes = useFlowStore((state) => state.nodes);
   const edges = useFlowStore((state) => state.edges);
   const setNodeSelected = useFlowStore((state) => state.setNodeSelected);
@@ -166,6 +172,10 @@ function FlowWithExecution() {
 
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
+
+  const addNode = useFlowStore((state) => state.addNode);
+
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleNodeClick = useCallback(
     (_: React.MouseEvent, node: MyNode) => {
@@ -191,6 +201,49 @@ function FlowWithExecution() {
     [setNodeSelected, setEdgeSelected]
   );
 
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+    setIsDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setIsDragOver(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragOver(false);
+
+      const type = e.dataTransfer.getData(
+        "application/reactflow"
+      ) as MyNodeType;
+      if (!type) return;
+
+      const position = screenToFlowPosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      addNode({ type, position });
+      // ✅ Convierte coordenadas de pantalla a coordenadas del canvas
+      // const position = screenToFlowPosition({
+      //   x: e.clientX,
+      //   y: e.clientY,
+      // });
+
+      // console.log(position);
+
+      // ✅ Crea el nuevo nodo con datos base
+      // addNode({
+      //   type,
+      //   position,
+      // });
+    },
+    [screenToFlowPosition, addNode]
+  );
+
   return (
     <div className="w-full h-screen flex flex-col">
       <ExecutionPanel />
@@ -208,6 +261,9 @@ function FlowWithExecution() {
             onPaneClick={handlePaneClick}
             fitView
             snapToGrid
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onDragLeave={handleDragLeave}
           >
             <Background
               color={"#aaa"}
@@ -250,8 +306,10 @@ export default function Page() {
   }
 
   return (
-    <FlowMachineProvider>
-      <FlowWithExecution />
-    </FlowMachineProvider>
+    <ReactFlowProvider>
+      <FlowMachineProvider>
+        <FlowWithExecution />
+      </FlowMachineProvider>
+    </ReactFlowProvider>
   );
 }

@@ -11,10 +11,10 @@ export function GeminiInfoNode({ data, id }: NodeProps<MyNode>) {
   const status = nodeData.status || "idle";
 
   const nodeSelected = useFlowStore((state) => state.nodeSelected);
-  const nodeSelectedText = nodeSelected?.id === id ? "text-green-800/80" : null;
+  const nodeSelectedText = nodeSelected?.id === id ? "text-gray-200" : null;
 
   const statusStyles = {
-    idle: "bg-gray-100 border-gray-400 text-gray-600",
+    idle: "bg-gradient-to-br from-[#3b82f6] to-[#2563eb] border-gray-400 text-gray-100",
     running: "bg-purple-100 border-purple-500 text-purple-700 animate-pulse",
     executed: "bg-indigo-100 border-indigo-500 text-indigo-700",
     error: "bg-red-100 border-red-500 text-red-700",
@@ -36,7 +36,7 @@ export function GeminiInfoNode({ data, id }: NodeProps<MyNode>) {
           ✨ {nodeData.label}
         </div>
 
-        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full border border-purple-600 flex items-center justify-center shadow-sm">
+        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white text-gray-600 rounded-full border border-purple-600 flex items-center justify-center shadow-sm">
           <StatusIcon size={14} />
         </div>
       </div>

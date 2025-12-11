@@ -3,6 +3,8 @@
 import { useFlowStore } from "@/store/flowStore";
 import { useFlowMachine, useFlowSnapshot } from "@/contexts/flowMachineContext";
 import { Button } from "@/components/ui/button";
+import NodePalette from "./icons/NodePalette";
+import { RunNodeIcon } from "./icons/NodeIcons";
 
 export function ExecutionPanel() {
   const nodes = useFlowStore((state) => state.nodes);
@@ -14,8 +16,13 @@ export function ExecutionPanel() {
   // Estado idle: muestra botón de inicio
   if (snapshot.value === "idle") {
     return (
-      <div id="execution-panel" className="p-4 bg-white shadow-lg rounded-lg">
-        <Button
+      <div
+        id="execution-panel"
+        className="flex flex-row justify-center items-center align-middle gap-2 p-4 bg-gray-200 shadow-lg rounded-lg"
+      >
+        <NodePalette />
+
+        <button
           onClick={() => {
             if (startNode) {
               useFlowStore.getState().setNodeStatus(startNode.id, "running");
@@ -24,8 +31,8 @@ export function ExecutionPanel() {
           }}
           className="hover:cursor-pointer"
         >
-          ▶️ Iniciar Ejecución
-        </Button>
+          <RunNodeIcon />
+        </button>
       </div>
     );
   }

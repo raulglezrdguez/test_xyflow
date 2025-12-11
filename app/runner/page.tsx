@@ -30,7 +30,7 @@ import {
   OutputNodeData,
   QuestionNodeData,
 } from "@/types/flow";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { InputNode } from "@/components/InputNode";
 import { OutputNode } from "@/components/OutputNode";
 import { QuestionModal } from "@/components/QuestionModal";
@@ -175,8 +175,6 @@ function FlowWithExecution() {
 
   const addNode = useFlowStore((state) => state.addNode);
 
-  const [isDragOver, setIsDragOver] = useState(false);
-
   const handleNodeClick = useCallback(
     (_: React.MouseEvent, node: MyNode) => {
       if (node.id === nodeSelected?.id) setNodeSelected(null);
@@ -204,17 +202,13 @@ function FlowWithExecution() {
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
-    setIsDragOver(true);
   }, []);
 
-  const handleDragLeave = useCallback(() => {
-    setIsDragOver(false);
-  }, []);
+  const handleDragLeave = useCallback(() => {}, []);
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
-      setIsDragOver(false);
 
       const type = e.dataTransfer.getData(
         "application/reactflow"
@@ -227,19 +221,6 @@ function FlowWithExecution() {
       });
 
       addNode({ type, position });
-      // ✅ Convierte coordenadas de pantalla a coordenadas del canvas
-      // const position = screenToFlowPosition({
-      //   x: e.clientX,
-      //   y: e.clientY,
-      // });
-
-      // console.log(position);
-
-      // ✅ Crea el nuevo nodo con datos base
-      // addNode({
-      //   type,
-      //   position,
-      // });
     },
     [screenToFlowPosition, addNode]
   );

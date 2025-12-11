@@ -2,7 +2,6 @@
 
 import { useFlowStore } from "@/store/flowStore";
 import { useFlowMachine, useFlowSnapshot } from "@/contexts/flowMachineContext";
-import { Button } from "@/components/ui/button";
 import NodePalette from "./icons/NodePalette";
 import { RunNodeIcon } from "./icons/NodeIcons";
 

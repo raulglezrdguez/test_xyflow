@@ -2,6 +2,7 @@ import Handlebars from "handlebars";
 import { createMachine, assign, fromPromise } from "xstate";
 import type { MyNode, MyEdge } from "@/types/flow";
 import { useFlowStore } from "@/store/flowStore";
+import { evaluateCondition } from "@/lib/evaluator";
 
 interface FlowContext {
   currentNodeId: string | null;
@@ -303,11 +304,7 @@ export const flowMachine = createMachine(
         for (const edge of connectedEdges) {
           if (edge.data?.condition) {
             try {
-              const func = new Function(
-                "answers",
-                `return ${edge.data.condition}`
-              );
-              if (func(context.answers)) {
+              if (evaluateCondition(edge.data.condition, context.answers)) {
                 nextNodeId = edge.target;
                 break;
               }

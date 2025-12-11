@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useFlowStore } from "@/store/flowStore";
 import { Save } from "lucide-react";
+import { isValidJavaScriptExpression } from "@/lib/utils";
 
 type Props = { edge: MyEdge | null };
 
@@ -23,10 +24,14 @@ const EdgeProperties = ({ edge }: Props) => {
   if (edge === null) return null;
 
   const handleClick = () => {
+    const { result } = isValidJavaScriptExpression(condition);
+    if (!result) {
+      alert("Invalid condition expression!");
+      return;
+    }
+
     updateEdgeData(edge.id, { condition });
   };
-
-  console.log(edge);
 
   return (
     <div className="flex flex-col border rounded-2xl px-4 py-2">

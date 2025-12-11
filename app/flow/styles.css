@@ -7,6 +7,10 @@
   --xy-node-boxshadow-selected-default: none;
   --xy-node-border-radius-default: 3px;
 
+  --xy-edge-stroke-default: #b1b1b1;
+  --xy-edge-stroke-width-default: 1;
+  --xy-edge-stroke-selected-default: #bfb;
+
   --xy-handle-background-color-default: #3a15cc;
   --xy-handle-border-color-default: #fff;
 }
@@ -19,6 +23,10 @@
   --xy-node-boxshadow-hover-default: none;
   --xy-node-boxshadow-selected-default: none;
   --xy-node-border-radius-default: 3px;
+
+  --xy-edge-stroke-default: #b1b1b1;
+  --xy-edge-stroke-width-default: 1;
+  --xy-edge-stroke-selected-default: #bfb;
 
   --xy-handle-background-color-default: #bebebe;
   --xy-handle-border-color-default: #1e1e1e;

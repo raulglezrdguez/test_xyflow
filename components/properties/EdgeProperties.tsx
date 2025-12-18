@@ -35,10 +35,10 @@ const EdgeProperties = ({ edge }: Props) => {
 
   return (
     <div className="flex flex-col border rounded-2xl px-4 py-2">
-      <h2 className="text-gray-700">Edge</h2>
+      <h2 className="text-gray-200">Edge</h2>
       <hr />
       <label htmlFor="condition" className="hover:cursor-pointer">
-        <p className="block text-sm m-2">Condition:</p>
+        <p className="block text-gray-400 text-sm m-2">Condition:</p>
         <input
           id="condition"
           name="condition"
@@ -47,13 +47,13 @@ const EdgeProperties = ({ edge }: Props) => {
           required
           value={condition}
           onChange={(e) => setCondition(e.target.value)}
-          className="text-sm text-gray-600 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
+          className="text-sm text-gray-200 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
         />
       </label>
       <Button
         variant={"outline"}
         onClick={handleClick}
-        className="hover:cursor-pointer mt-2"
+        className="w-24 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer mt-4 transition-colors duration-300 ease-in-out"
       >
         <Save size={14} />
       </Button>

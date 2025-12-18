@@ -24,7 +24,7 @@ const NodeProperties = ({ node }: Props) => {
   if (node.type === "output")
     return <OutputNodeProperties id={node.id} data={node.data} />;
 
-  return <div className="text-sm">Node Properties</div>;
+  return <div className="text-gray-200 text-sm">Node Properties</div>;
 };
 
 export default NodeProperties;

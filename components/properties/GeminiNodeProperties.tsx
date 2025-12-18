@@ -35,10 +35,10 @@ const GeminiNodeProperties = ({ data, id }: Props) => {
 
   return (
     <div className="flex flex-col border rounded-2xl px-4 py-2">
-      <h2 className="text-gray-700">Gemini Node {id}</h2>
+      <h2 className="text-gray-200">Gemini Node {id}</h2>
       <hr />
       <label htmlFor="nodeId" className="hover:cursor-pointer">
-        <p className="block text-sm m-2">Node Id:</p>
+        <p className="block text-gray-400 text-sm m-2">Node Id:</p>
         <input
           id="nodeId"
           name="nodeId"
@@ -47,25 +47,26 @@ const GeminiNodeProperties = ({ data, id }: Props) => {
           required
           value={nodeId}
           onChange={(e) => setNodeId(e.target.value)}
-          className="text-sm text-gray-600 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
+          className="text-sm text-gray-200 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
         />
       </label>
       <label htmlFor="prompt" className="hover:cursor-pointer">
-        <p className="block text-sm m-2">Prompt:</p>
-        <input
+        <p className="block text-gray-400 text-sm m-2">Prompt:</p>
+        <textarea
           id="prompt"
           name="prompt"
-          type="text"
           placeholder="prompt..."
           required
+          cols={20}
+          rows={10}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          className="text-sm text-gray-600 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
+          className="text-sm text-gray-200 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
         />
       </label>
 
       <label htmlFor="model" className="mt-2 hover:cursor-pointer">
-        <p className="block text-sm m-2">Model:</p>
+        <p className="block text-gray-400 text-sm m-2">Model:</p>
         <select
           id={"model"}
           name={"model"}
@@ -83,8 +84,8 @@ const GeminiNodeProperties = ({ data, id }: Props) => {
 
       <label htmlFor="temperature" className="mt-2 hover:cursor-pointer">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-700">Temperature</span>
-          <span className="text-sm font-mono bg-gray-100 px-2 py-1 rounded-full text-center">
+          <span className="text-sm font-medium text-gray-200">Temperature</span>
+          <span className="text-sm font-mono bg-gray-600 text-gray-200 px-2 py-1 rounded-full text-center">
             {temperature.toFixed(2)}
           </span>
         </div>
@@ -101,14 +102,14 @@ const GeminiNodeProperties = ({ data, id }: Props) => {
           onChange={(e) => {
             setTemperature(parseFloat(e.target.value));
           }}
-          className="text-sm text-gray-600 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
+          className="text-sm text-gray-200 focus:ring-gray-500 border-gray-300 rounded p-2 w-full"
         />
       </label>
 
       <Button
         variant={"outline"}
         onClick={handleSave}
-        className="hover:cursor-pointer mt-2"
+        className="w-24 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer mt-4 transition-colors duration-300 ease-in-out"
       >
         <Save size={14} />
       </Button>

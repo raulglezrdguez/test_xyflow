@@ -5,11 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "firebase/auth";
+import { LogOut } from "lucide-react";
 
 import { useAuthStore } from "@/store/user";
 import { auth } from "@/lib/firebase/config";
 
-function Header({}) {
+function UserMenu({}) {
   const path = usePathname();
   const { isAuthenticated, clearUser, getUserData } = useAuthStore();
 
@@ -44,46 +45,18 @@ function Header({}) {
   }, []);
 
   return (
-    <header
-      id="header-menu"
-      className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 text-nowrap"
+    <div
+      id="user-menu"
+      className="fixed top-4 right-2 z-50 text-nowrap flex flex-col align-middle justify-center items-center"
     >
-      <div className="backdrop-blur-sm bg-white/10 border border-white/80 rounded-full px-8 py-3 flex items-center justify-between gap-8">
-        <Link href={"/"} className="mr-10 md:mr20">
-          <Image
-            src="/logo.svg"
-            alt="logo"
-            className="min-w-12 object-cover"
-            width={12}
-            height={12}
-          />
-        </Link>
-
-        <div className="hidden md:flex space-x-6">
-          <Link
-            href={`/exams`}
-            className="text-gray-800/80 bg-yellow-200/80 border rounded-2xl font-medium transition-all duration-300 hover:text-green-800 hover:bg-amber-200/80 px-4 py-2 hover:border-green-400 hover:border cursor-pointer"
-          >
-            Exams
-          </Link>
-          <Link
-            href={`/patients`}
-            className="text-gray-800/80 bg-yellow-200/80 border rounded-2xl font-medium transition-all duration-300 hover:text-green-800 hover:bg-amber-200/80 px-4 py-2 hover:border-green-400 hover:border cursor-pointer"
-          >
-            Patients
-          </Link>
-          <Link
-            href={`/stats`}
-            className="text-gray-800/80 bg-yellow-200/80 border rounded-2xl font-medium transition-all duration-300 hover:text-green-800 hover:bg-amber-200/80 px-4 py-2 hover:border-green-400 hover:border cursor-pointer"
-          >
-            Stats
-          </Link>
-        </div>
-
+      <div
+        id="user-menu-options"
+        onMouseLeave={() => setMenuOpen(false)}
+        className="backdrop-blur-sm bg-white/10 border border-white/80 rounded-2xl px-4 py-2 flex items-center justify-between gap-8 transform translate-x-18 hover:translate-0 transition-transform duration-300 ease-in-out"
+      >
         {path !== `/login` &&
           (isAuthenticated && userData ? (
             <div className="relative" ref={menuRef}>
-              {/* Menu trigger */}
               <button
                 aria-haspopup="true"
                 aria-expanded={menuOpen}
@@ -106,8 +79,6 @@ function Header({}) {
                   </div>
                 )}
               </button>
-
-              {/* Dropdown menu */}
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-black/80 backdrop-blur rounded-md border border-white/10 shadow-lg py-2 z-50">
                   <div className="px-4 py-2 flex items-center gap-3 border-b border-white/5 min-w-0">
@@ -138,9 +109,9 @@ function Header({}) {
 
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 hover:bg-red-800/60 hover:cursor-pointer text-sm bg-red-800/80"
+                    className="w-full text-right px-4 py-2 hover:bg-red-800/60 hover:cursor-pointer text-sm bg-red-800/80"
                   >
-                    Close session
+                    <LogOut className="w-4 h-4 inline-block" />
                   </button>
                 </div>
               )}
@@ -156,8 +127,8 @@ function Header({}) {
             </div>
           ))}
       </div>
-    </header>
+    </div>
   );
 }
 
-export default Header;
+export default UserMenu;

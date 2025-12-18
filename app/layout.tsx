@@ -29,7 +29,6 @@ export default function RootLayout({
         <AuthProvider>
           <RequireAuth>
             <div className="relative z-10 text-white">
-              {<Header />}
               {children}
               <Toaster position="top-center" richColors duration={3000} />
             </div>

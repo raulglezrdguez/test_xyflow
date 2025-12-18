@@ -1,7 +1,6 @@
 "use client";
 
 import { useFlowMachine } from "@/contexts/flowMachineContext";
-import { useFlowStore } from "@/store/flowStore";
 import { type GeminiInfoNodeData } from "@/types/flow";
 import { Node } from "@xyflow/react";
 import { useState } from "react";
@@ -34,13 +33,15 @@ const GeminiInfoForm = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-xl p-6 w-96 shadow-2xl">
-        <h2 className="text-xl font-bold mb-4">{currentQuestion.data.label}</h2>
+        <h2 className="text-xl text-gray-800 font-bold mb-4">
+          {currentQuestion.data.label}
+        </h2>
 
         <input
           type={"password"}
           value={geminiApiKey || ""}
           onChange={(e) => setGeminiApikey(e.target.value)}
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="text-gray-800 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="gemini apikey..."
           autoFocus
         />

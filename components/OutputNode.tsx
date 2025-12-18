@@ -8,7 +8,7 @@ export function OutputNode({ data, id }: NodeProps<MyNode>) {
   const status = nodeData.status || "idle";
 
   const nodeSelected = useFlowStore((state) => state.nodeSelected);
-  const nodeSelectedText = nodeSelected?.id === id ? "text-gray-200" : null;
+  const nodeBorder = nodeSelected?.id === id ? "border-4" : "border-2";
 
   const statusStyles = {
     idle: "bg-gradient-to-br from-[#71717a] to-[#52525b] border-gray-400 text-gray-100",
@@ -26,10 +26,10 @@ export function OutputNode({ data, id }: NodeProps<MyNode>) {
 
   return (
     <div
-      className={`relative min-w-48 px-4 py-3 rounded-xl border-2 shadow-md ${statusStyles[status]}`}
+      className={`relative min-w-48 px-4 py-3 rounded-xl ${nodeBorder} shadow-md ${statusStyles[status]}`}
     >
       <Handle type="target" position={Position.Top} />
-      <div className={`flex justify-center ${nodeSelectedText}`}>
+      <div className={`flex justify-center`}>
         <div className="text-sm font-semibold truncate">
           {`${nodeData.label}` || "N/A"}
         </div>

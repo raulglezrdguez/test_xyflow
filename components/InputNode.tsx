@@ -8,7 +8,7 @@ export function InputNode({ data, id }: NodeProps<MyNode>) {
   const status = nodeData.status || "idle";
 
   const nodeSelected = useFlowStore((state) => state.nodeSelected);
-  const nodeSelectedText = nodeSelected?.id === id ? "text-gray-200" : null;
+  const nodeBorder = nodeSelected?.id === id ? "border-4" : "border-2";
 
   const statusStyles = {
     idle: "bg-gradient-to-br from-[#10b981] to-[#059669] border-gray-400 text-gray-100",
@@ -26,9 +26,9 @@ export function InputNode({ data, id }: NodeProps<MyNode>) {
 
   return (
     <div
-      className={`relative min-w-48 px-4 py-3 rounded-xl border-2 shadow-md ${statusStyles[status]}`}
+      className={`relative min-w-48 px-4 py-3 rounded-xl ${nodeBorder} shadow-md ${statusStyles[status]}`}
     >
-      <div className={`flex flex-col justify-center ${nodeSelectedText}`}>
+      <div className={`flex flex-col justify-center`}>
         <div className={`text-sm font-semibold truncate`}>{nodeData.label}</div>
 
         <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white text-gray-600 rounded-full border border-gray-600 flex items-center justify-center shadow-sm">

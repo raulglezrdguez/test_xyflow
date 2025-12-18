@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useEffect,
+  useSyncExternalStore,
+} from "react";
 import { useMachine } from "@xstate/react";
 import { ActorRefFrom } from "xstate";
 import { flowMachine } from "@/machines/flowMachine";
@@ -29,13 +35,6 @@ export function FlowMachineProvider({ children }: { children: ReactNode }) {
           .getState()
           .setCurrentNodeId(nextSnapshot.context.currentNodeId);
       }
-
-      // Sincroniza respuestas
-      Object.entries(nextSnapshot.context.answers).forEach(
-        ([nodeId, answer]) => {
-          useFlowStore.getState().setAnswer(nodeId, answer);
-        }
-      );
     });
 
     return () => subscription.unsubscribe();
@@ -57,5 +56,15 @@ export const useFlowMachine = (): FlowMachineActorRef => {
 
 export const useFlowSnapshot = () => {
   const actorRef = useFlowMachine();
-  return actorRef.getSnapshot();
+
+  // Subscribe to the XState actorRef using useSyncExternalStore so components
+  // re-render when the machine snapshot changes.
+  return useSyncExternalStore(
+    (notify) => {
+      const sub = actorRef.subscribe(() => notify());
+      return () => sub.unsubscribe();
+    },
+    () => actorRef.getSnapshot(),
+    () => actorRef.getSnapshot()
+  );
 };

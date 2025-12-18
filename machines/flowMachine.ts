@@ -6,7 +6,6 @@ import { evaluateCondition } from "@/lib/evaluator";
 
 interface FlowContext {
   currentNodeId: string | null;
-  answers: Record<string, unknown>;
 }
 
 type FlowEvent =
@@ -100,7 +99,6 @@ export const flowMachine = createMachine(
 
     context: () => ({
       currentNodeId: null,
-      answers: {},
     }),
 
     states: {
@@ -128,18 +126,13 @@ export const flowMachine = createMachine(
               ANSWER: {
                 target: "evaluating",
                 actions: [
-                  assign({
-                    answers: ({ context, event }) => {
-                      return event.answer
-                        ? {
-                            ...context.answers,
-                            [event.nodeId]: event.answer,
-                          }
-                        : {
-                            ...context.answers,
-                          };
-                    },
-                  }),
+                  ({ event }) => {
+                    if (event.answer) {
+                      useFlowStore
+                        .getState()
+                        .setAnswer(event.nodeId, event.answer);
+                    }
+                  },
                   "markNodeAsExecuted",
                 ],
               },
@@ -164,26 +157,24 @@ export const flowMachine = createMachine(
               onDone: {
                 target: "evaluating",
                 actions: [
-                  assign({
-                    answers: ({ context, event }) => ({
-                      ...context.answers,
-                      [context.currentNodeId as string]: event.output,
-                    }),
-                  }),
+                  ({ context, event }) => {
+                    useFlowStore
+                      .getState()
+                      .setAnswer(context.currentNodeId as string, event.output);
+                  },
                   "markNodeAsExecuted",
                 ],
               },
               onError: {
                 target: "evaluating",
                 actions: [
-                  assign({
-                    answers: ({ context, event }) => ({
-                      ...context.answers,
-                      [context.currentNodeId as string]: {
+                  ({ context, event }) => {
+                    useFlowStore
+                      .getState()
+                      .setAnswer(context.currentNodeId as string, {
                         error: (event.error as Error).message,
-                      },
-                    }),
-                  }),
+                      });
+                  },
                   "markNodeAsError",
                 ],
               },
@@ -203,32 +194,30 @@ export const flowMachine = createMachine(
                   prompt: node.data.prompt,
                   model: node.data.model,
                   temperature: node.data.temperature,
-                  answers: context.answers,
+                  answers: useFlowStore.getState().answers,
                 };
               },
               onDone: {
                 target: "evaluating",
                 actions: [
-                  assign({
-                    answers: ({ context, event }) => ({
-                      ...context.answers,
-                      [context.currentNodeId as string]: event.output,
-                    }),
-                  }),
+                  ({ context, event }) => {
+                    useFlowStore
+                      .getState()
+                      .setAnswer(context.currentNodeId as string, event.output);
+                  },
                   "markNodeAsExecuted",
                 ],
               },
               onError: {
                 target: "evaluating",
                 actions: [
-                  assign({
-                    answers: ({ context, event }) => ({
-                      ...context.answers,
-                      [context.currentNodeId as string]: {
+                  ({ context, event }) => {
+                    useFlowStore
+                      .getState()
+                      .setAnswer(context.currentNodeId as string, {
                         error: (event.error as Error).message,
-                      },
-                    }),
-                  }),
+                      });
+                  },
                   "markNodeAsError",
                 ],
               },
@@ -304,7 +293,12 @@ export const flowMachine = createMachine(
         for (const edge of connectedEdges) {
           if (edge.data?.condition) {
             try {
-              if (evaluateCondition(edge.data.condition, context.answers)) {
+              if (
+                evaluateCondition(
+                  edge.data.condition,
+                  useFlowStore.getState().answers
+                )
+              ) {
                 nextNodeId = edge.target;
                 break;
               }

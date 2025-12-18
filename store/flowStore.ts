@@ -28,6 +28,8 @@ type FlowStore = {
   setNodeStatus: (nodeId: string, status: string) => void;
   setCurrentNodeId: (nodeId: string | null) => void;
   setAnswer: (nodeId: string, answer: unknown) => void;
+  clearAnswers: () => void;
+  resetNodeStatuses: () => void;
   setExecutionStatus: (
     status: "idle" | "running" | "paused" | "completed"
   ) => void;
@@ -81,6 +83,19 @@ export const useFlowStore = create<FlowStore>()((set) => ({
   setAnswer: (nodeId, answer) =>
     set((state) => ({
       answers: { ...state.answers, [nodeId]: answer },
+    })),
+
+  clearAnswers: () => set({ answers: {} }),
+
+  resetNodeStatuses: () =>
+    set((state) => ({
+      nodes: state.nodes.map(
+        (n) =>
+          ({
+            ...n,
+            data: { ...n.data, status: "idle" },
+          } as MyNode)
+      ),
     })),
 
   setExecutionStatus: (status) => set({ executionStatus: status }),

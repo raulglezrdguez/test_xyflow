@@ -13,8 +13,8 @@ export const nodeTypeDefaults: Record<MyNodeType, NodeTypeInfo> = {
   question: {
     type: "question",
     defaultData: {
-      label: "Nueva Pregunta",
-      question: "¿Cuál es tu pregunta?",
+      label: "Question",
+      question: "Question?",
       questionType: "text",
       status: "idle",
     },
@@ -22,7 +22,7 @@ export const nodeTypeDefaults: Record<MyNodeType, NodeTypeInfo> = {
   "http-request": {
     type: "http-request",
     defaultData: {
-      label: "Nueva API",
+      label: "API Call",
       endpoint: "https://api.ejemplo.com",
       method: "GET",
       status: "idle",
@@ -30,7 +30,7 @@ export const nodeTypeDefaults: Record<MyNodeType, NodeTypeInfo> = {
   },
   "gemini-info": {
     type: "gemini-info",
-    defaultData: { label: "Info de Gemini" },
+    defaultData: { label: "Gemini Info" },
   },
   gemini: {
     type: "gemini",
@@ -43,7 +43,7 @@ export const nodeTypeDefaults: Record<MyNodeType, NodeTypeInfo> = {
   },
   output: {
     type: "output",
-    defaultData: { label: "Nuevo Output", result: "", status: "idle" },
+    defaultData: { label: "Output", result: "", status: "idle" },
   },
 };
 

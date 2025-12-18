@@ -1,4 +1,3 @@
-import React from "react";
 import {
   PlayCircle, // Nodo de Inicio
   MessageCircleQuestion, // Nodo de Preguntas
@@ -12,7 +11,7 @@ import {
 import NodeIconWrapper from "./NodeIconWrapper"; // Asegúrate de ajustar la ruta
 
 // Estilos comunes para los iconos
-const iconStyle = { color: "white", size: 30, strokeWidth: 2 };
+const iconStyle = { color: "#eee", size: 18, strokeWidth: 2 };
 
 // 1. Nodo de Inicio
 export const StartNodeIcon = () => (
@@ -38,7 +37,7 @@ export const QuestionNodeIcon = () => (
 export const HttpRequestNodeIcon = () => (
   <NodeIconWrapper
     color="linear-gradient(135deg, #8b5cf6, #7c3aed)"
-    label="HTTP Request"
+    label="HTTP"
   >
     <Globe {...iconStyle} />
   </NodeIconWrapper>
@@ -58,7 +57,7 @@ export const GeminiKeyNodeIcon = () => (
 export const GeminiServiceNodeIcon = () => (
   <NodeIconWrapper
     color="linear-gradient(135deg, #ef4444, #dc2626)"
-    label="Gemini Service"
+    label="Gemini"
   >
     <Sparkles {...iconStyle} />
   </NodeIconWrapper>

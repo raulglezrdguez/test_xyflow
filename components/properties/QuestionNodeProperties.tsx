@@ -66,7 +66,7 @@ const QuestionNodeProperties = ({ data, id }: Props) => {
 
   return (
     <div className="flex flex-col border rounded-2xl px-4 py-2">
-      <h2 className="text-gray-200">Question Node {id}</h2>
+      <h2 className="text-gray-200">Question Node</h2>
       <hr />
       <label htmlFor="nodeId" className="hover:cursor-pointer">
         <p className="block text-gray-400 text-sm m-2">Node Id:</p>

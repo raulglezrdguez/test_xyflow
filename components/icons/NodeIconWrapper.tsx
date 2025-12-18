@@ -16,7 +16,7 @@ const NodeIconWrapper = ({ color, children, label }: NodeIconWrapperProps) => {
   return (
     <div className="flex flex-col items-center m-2 cursor-grab text-center">
       <div
-        className="flex items-center justify-center rounded-[50%] shadow-md w-12 h-12"
+        className="flex items-center justify-center rounded-[50%] shadow-md w-8 h-8"
         style={{
           background: color,
         }}

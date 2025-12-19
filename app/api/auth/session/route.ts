@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
     // Verify the Firebase ID token
     const decodedToken = await adminAuth.verifyIdToken(token);
-
+    console.log(decodedToken);
     // Create a session cookie (valid for 5 days)
     const sessionCookie = await adminAuth.createSessionCookie(token, {
       expiresIn: 60 * 60 * 24 * 5 * 1000, // 5 days in milliseconds

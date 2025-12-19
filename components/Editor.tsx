@@ -40,6 +40,7 @@ import { GeminiInfoNode } from "./GeminiInfoNode";
 import Properties from "./properties/Properties";
 import MenuEditor from "./MenuEditor";
 import UserMenu from "./UserMenu";
+import { PlusSquare } from "lucide-react";
 
 const nodeTypes = {
   input: InputNode,
@@ -311,7 +312,10 @@ export default function Editor() {
       <Panel defaultSize={25} minSize={10}>
         <section className="h-full bg-gray-800 p-4">
           <MenuEditor />
-          <h2 className="text-xl font-bold text-gray-200">Diagrams</h2>
+          <div className="h-4" />
+          <button>
+            <PlusSquare className="w-6 h-6" />
+          </button>
         </section>
       </Panel>
       <PanelResizeHandle className="w-2 bg-gray-600 hover:bg-gray-500 transition-colors" />

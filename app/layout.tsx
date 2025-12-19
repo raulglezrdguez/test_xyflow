@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import RequireAuth from "@/components/RequireAuth";
-import Header from "@/components/Header";
 import { Toaster } from "@/components/ui/sonner";
 
 const geist = localFont({

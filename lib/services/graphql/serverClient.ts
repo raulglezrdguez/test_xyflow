@@ -49,7 +49,6 @@ function createAuthLink(token?: string) {
 
     const authorization = tokenFromCtx ? `Bearer ${tokenFromCtx}` : "";
 
-    console.log("authorization", authorization);
     operation.setContext({
       headers: {
         ...(ctx.headers || {}),

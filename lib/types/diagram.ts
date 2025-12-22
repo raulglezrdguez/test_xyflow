@@ -105,8 +105,12 @@ export type DiagramOutput = {
   updatedAt: Date;
 };
 
-export interface DiagramsResponse {
-  diagrams: DiagramOutput[];
+export interface MyDiagramsResponse {
+  myDiagrams: DiagramOutput[];
+}
+
+export interface PublicDiagramsResponse {
+  publicDiagrams: DiagramOutput[];
 }
 
 export type DiagramListOutput = {

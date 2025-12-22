@@ -5,12 +5,22 @@ import { createServerApolloClient } from "@/lib/services/graphql/serverClient";
 import { CreateDiagramInput } from "@/lib/types/diagram";
 import {
   CREATE_DIAGRAM_MUTATION,
-  getDiagrams,
+  getMyDiagrams,
+  getPublicDiagrams,
 } from "@/lib/services/graphql/queries/diagramQueries";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const { diagrams, error } = await getDiagrams();
+    const { searchParams } = new URL(request.url);
+    // const limit = parseInt(searchParams.get("limit") || "20", 10);
+    // const offset = parseInt(searchParams.get("offset") || "0", 10);
+    const isPublic = searchParams.get("public") === "true";
+
+    const { diagrams, error } = isPublic
+      ? await getPublicDiagrams()
+      : // : await getMyDiagrams(limit, offset);
+        await getMyDiagrams();
+    // const { diagrams, error } = await getMyDiagrams();
 
     if (error) {
       return NextResponse.json({ error: error.message, status: error.status });

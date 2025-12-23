@@ -42,9 +42,11 @@ export type CreateDiagramInput = {
   author: string;
   public?: boolean;
   result?: ResultInput[];
-  nodes?: DiagramNode[];
-  edges?: DiagramEdge[];
-  viewport?: DiagramViewport;
+  state?: {
+    nodes?: DiagramNode[];
+    edges?: DiagramEdge[];
+    viewport?: DiagramViewport;
+  };
 };
 
 export type UpdateDiagramInput = {
@@ -52,9 +54,11 @@ export type UpdateDiagramInput = {
   description?: string;
   public?: boolean;
   result?: ResultInput[];
-  nodes?: DiagramNode[];
-  edges?: DiagramEdge[];
-  viewport?: DiagramViewport;
+  state?: {
+    nodes?: DiagramNode[];
+    edges?: DiagramEdge[];
+    viewport?: DiagramViewport;
+  };
 };
 
 export type DiagramInput = {
@@ -97,7 +101,7 @@ export type DiagramOutput = {
   description: string;
   author: User;
   public: boolean;
-  result: ResultOutput;
+  result: ResultOutput[];
   nodes: DiagramNode[];
   edges: DiagramEdge[];
   viewport: DiagramViewport;

@@ -65,9 +65,11 @@ export async function POST(request: NextRequest) {
       author: body.author || "",
       public: body.public ?? false,
       result: body.result || [],
-      nodes: body.nodes || [],
-      edges: body.edges || [],
-      viewport: body.viewport,
+      state: {
+        nodes: body.state?.nodes || [],
+        edges: body.state?.edges || [],
+        viewport: body.state?.viewport,
+      },
     };
 
     const apolloClient = createServerApolloClient(sessionCookie);

@@ -108,15 +108,37 @@ export const CREATE_DIAGRAM_MUTATION = gql`
 `;
 
 export const UPDATE_DIAGRAM_MUTATION = gql`
-  mutation UpdateDiagram($id: String, $input: UpdateDiagramInput!) {
+  mutation UpdateDiagram($id: ID!, $input: UpdateDiagramInput!) {
     updateDiagram(id: $id, input: $input) {
       _id
       title
       description
       public
-      author {
-        name
-        email
+      result {
+        label
+        value
+        reference
+      }
+      nodes {
+        id
+        type
+        position {
+          x
+          y
+        }
+        data
+      }
+      edges {
+        id
+        source
+        target
+        type
+        data
+      }
+      viewport {
+        x
+        y
+        zoom
       }
     }
   }

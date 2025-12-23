@@ -64,7 +64,12 @@ export async function POST(request: NextRequest) {
       description: body.description.trim(),
       author: body.author || "",
       public: body.public ?? false,
-      result: body.result || [],
+      result:
+        body.result?.map((r) => ({
+          label: r.label,
+          value: r.value,
+          reference: r.reference || "",
+        })) || [],
       state: {
         nodes: body.state?.nodes || [],
         edges: body.state?.edges || [],

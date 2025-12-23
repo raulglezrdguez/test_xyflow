@@ -28,7 +28,12 @@ export async function PUT(
       title: body.title?.trim() || undefined,
       description: body.description?.trim() || undefined,
       public: body.public || undefined,
-      result: body.result || undefined,
+      result:
+        body.result?.map((r) => ({
+          label: r.label,
+          value: r.value,
+          reference: r.reference || "",
+        })) || [],
       state: {
         nodes: body.state?.nodes || [],
         edges: body.state?.edges || [],

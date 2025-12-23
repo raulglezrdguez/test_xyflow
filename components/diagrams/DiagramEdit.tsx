@@ -97,11 +97,11 @@ const DiagramEdit = ({ diagram, back }: Props) => {
   if (diagram.author.email !== user?.email) {
     return (
       <div className="flex flex-col justify-between items-start align-middle gap-2 text-gray-200 mb-2 border rounded py-2 px-4">
-        <div className="w-full flex flex-row justify-around items-center align-middle">
+        <div className="w-full flex flex-row justify-start items-center align-middle gap-4">
           <Button
             variant={"outline"}
             onClick={back}
-            className="w-12 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
+            className="w-6 h-6 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
           >
             <ArrowLeft size={14} />
           </Button>
@@ -124,11 +124,11 @@ const DiagramEdit = ({ diagram, back }: Props) => {
   return (
     <div className="flex flex-col justify-between items-start align-middle gap-2 text-gray-200 mb-2 border rounded py-2 px-4">
       {error && <ErrorMessage error={error} onClose={() => setError("")} />}
-      <div className="w-full flex flex-row justify-around items-center align-middle">
+      <div className="w-full flex flex-row justify-start items-center align-middle gap-4">
         <Button
           variant={"outline"}
           onClick={back}
-          className="w-12 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
+          className="w-6 h-6 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
         >
           <ArrowLeft size={14} />
         </Button>

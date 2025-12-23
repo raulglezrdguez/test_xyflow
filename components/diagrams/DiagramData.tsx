@@ -20,7 +20,7 @@ const DiagramData = ({ diagram }: Props) => {
       <Button
         variant={"outline"}
         onClick={() => {}}
-        className="w-12 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
+        className="w-6 h-6 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
       >
         <Check size={14} />
       </Button>
@@ -29,7 +29,7 @@ const DiagramData = ({ diagram }: Props) => {
       <Button
         variant={"outline"}
         onClick={() => setStatus("edit")}
-        className="w-12 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
+        className="w-6 h-6 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
       >
         <ArrowDown size={14} />
       </Button>

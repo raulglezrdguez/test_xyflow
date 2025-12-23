@@ -4,6 +4,17 @@ import { DiagramOutput, ResultInput } from "@/lib/types/diagram";
 import { useAuthStore } from "@/store/user";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import { Check, Edit3, Loader, Save, XCircle } from "lucide-react";
 import * as Switch from "@radix-ui/react-switch";
 import { toast } from "sonner";
@@ -17,6 +28,7 @@ const DiagramEdit = ({ diagram, back }: Props) => {
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const [title, setTitle] = useState<string>(diagram.title);
   const [description, setDescription] = useState<string>(diagram.description);
@@ -66,8 +78,28 @@ const DiagramEdit = ({ diagram, back }: Props) => {
     }
   };
 
-  const handleRemove = () => {
-    console.log("handle remove");
+  // const handleRemove = () => {
+  //   setDeleteDialogOpen(true);
+  // };
+
+  const confirmDelete = async () => {
+    setDeleteDialogOpen(false);
+
+    try {
+      const res = await fetch(`/api/diagrams/${diagram?._id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to delete diagram");
+      }
+
+      toast.success(`Diagrama "${title}" eliminado exitosamente`);
+      back();
+    } catch (err: unknown) {
+      setError((err as Error).message || String(err));
+    }
   };
 
   const setResult = (
@@ -303,13 +335,38 @@ const DiagramEdit = ({ diagram, back }: Props) => {
             <Save size={14} />
           )}
         </Button>
-        <Button
-          variant={"outline"}
-          onClick={handleRemove}
-          className="hover:cursor-pointer text-red-400 hover:text-red-200 transition-colors duration-300 ease-in-out"
-        >
-          <XCircle size={14} />
-        </Button>
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant={"outline"}
+              className="hover:cursor-pointer text-red-400 hover:text-red-200 transition-colors duration-300 ease-in-out"
+            >
+              <XCircle size={14} />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="border border-gray-50">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-gray-200">
+                Remove diagram?
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-gray-200">
+                Are you sure you want to delete the diagram &quot;${title}
+                &quot;? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="text-gray-200">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={confirmDelete}
+                className="bg-red-600 hover:bg-red-700 text-gray-200"
+              >
+                Remove
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

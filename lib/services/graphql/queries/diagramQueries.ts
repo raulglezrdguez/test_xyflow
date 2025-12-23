@@ -144,6 +144,17 @@ export const UPDATE_DIAGRAM_MUTATION = gql`
   }
 `;
 
+export const DELETE_DIAGRAM_MUTATION = gql`
+  mutation DeleteDiagram($id: String!) {
+    deleteDiagram(id: $id) {
+      _id
+      title
+      description
+      public
+    }
+  }
+`;
+
 // export async function getMyDiagrams(limit: number = 20, offset: number = 0) {
 export async function getMyDiagrams() {
   try {

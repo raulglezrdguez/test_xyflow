@@ -1,7 +1,7 @@
 "use client";
 
 import { DiagramOutput } from "@/lib/types/diagram";
-import { ArrowDown, Check } from "lucide-react";
+import { Check, Edit2 } from "lucide-react";
 import { useState } from "react";
 import DiagramEdit from "./DiagramEdit";
 import { Button } from "../ui/button";
@@ -31,7 +31,7 @@ const DiagramData = ({ diagram }: Props) => {
         onClick={() => setStatus("edit")}
         className="w-6 h-6 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
       >
-        <ArrowDown size={14} />
+        <Edit2 size={14} />
       </Button>
     </div>
   );

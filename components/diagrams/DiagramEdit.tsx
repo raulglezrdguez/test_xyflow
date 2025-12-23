@@ -4,7 +4,7 @@ import { DiagramOutput, ResultInput } from "@/lib/types/diagram";
 import { useAuthStore } from "@/store/user";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { ArrowLeft, Check, Loader, Save, XCircle } from "lucide-react";
+import { Check, Edit3, Loader, Save, XCircle } from "lucide-react";
 import * as Switch from "@radix-ui/react-switch";
 import { toast } from "sonner";
 import ErrorMessage from "../ErrorMessage";
@@ -120,7 +120,7 @@ const DiagramEdit = ({ diagram, back }: Props) => {
             onClick={back}
             className="w-6 h-6 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
           >
-            <ArrowLeft size={14} />
+            <Edit3 size={14} />
           </Button>
           <h2 className="text-gray-200 truncate">{diagram.title}</h2>
         </div>
@@ -147,7 +147,7 @@ const DiagramEdit = ({ diagram, back }: Props) => {
           onClick={back}
           className="w-6 h-6 self-center text-gray-200 hover:text-green-200 hover:cursor-pointer transition-colors duration-300 ease-in-out"
         >
-          <ArrowLeft size={14} />
+          <Edit3 size={14} />
         </Button>
         <h2 className="text-gray-200 truncate">{diagram.title}</h2>
       </div>

@@ -27,7 +27,7 @@ export async function PUT(
     const diagramInput: UpdateDiagramInput = {
       title: body.title?.trim() || undefined,
       description: body.description?.trim() || undefined,
-      public: body.public || undefined,
+      public: body.public ? true : body.public === false ? false : undefined,
       result:
         body.result?.map((r) => ({
           label: r.label,

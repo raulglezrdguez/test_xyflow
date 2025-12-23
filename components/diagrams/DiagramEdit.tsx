@@ -8,6 +8,7 @@ import { ArrowLeft, Check, Loader, Save, XCircle } from "lucide-react";
 import * as Switch from "@radix-ui/react-switch";
 import { toast } from "sonner";
 import ErrorMessage from "../ErrorMessage";
+import { isValidJavaScriptExpression } from "@/lib/utils";
 
 type Props = { diagram: DiagramOutput; back: () => void };
 
@@ -26,6 +27,15 @@ const DiagramEdit = ({ diagram, back }: Props) => {
   const [newReference, setNewReference] = useState<string>("");
 
   const handleSave = async () => {
+    for (let i = 0; i < results.length; i++) {
+      const r = results[i];
+      const { result } = isValidJavaScriptExpression(r.value);
+      if (!result) {
+        toast.error(`Invalid expression: "${r.value}"`);
+        return;
+      }
+    }
+
     setSaving(true);
     setError(null);
 
@@ -85,6 +95,13 @@ const DiagramEdit = ({ diagram, back }: Props) => {
 
   const addResult = () => {
     if (!newLabel || !newValue) return;
+
+    const { result } = isValidJavaScriptExpression(newValue);
+    if (!result) {
+      toast.error(`Invalid expression: "${newValue}"`);
+      return;
+    }
+
     setResults([
       ...results,
       { label: newLabel, value: newValue, reference: newReference || "" },

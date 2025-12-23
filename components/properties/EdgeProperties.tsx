@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { useFlowStore } from "@/store/flowStore";
 import { Save } from "lucide-react";
 import { isValidJavaScriptExpression } from "@/lib/utils";
+import { toast } from "sonner";
 
 type Props = { edge: MyEdge | null };
 
@@ -26,7 +27,7 @@ const EdgeProperties = ({ edge }: Props) => {
   const handleClick = () => {
     const { result } = isValidJavaScriptExpression(condition);
     if (!result) {
-      alert("Invalid condition expression!");
+      toast.error("Invalid condition expression!");
       return;
     }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusSquare } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as Switch from "@radix-ui/react-switch";
 import { DiagramOutput } from "@/lib/types/diagram";
 import DiagramData from "./DiagramData";
@@ -32,6 +32,20 @@ const Diagrams = () => {
     setPublicDiagrams(value);
   };
 
+  const refreshDiagrams = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/diagrams?public=${publicDiagrams}`);
+      if (response.ok) {
+        const data = await response.json();
+        setDiagrams(data);
+      } else {
+        console.error("Error fetching diagrams");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }, [publicDiagrams]);
+
   return (
     <div className="flex flex-col items-start justify-center align-middle">
       <div className="flex items-center">
@@ -59,7 +73,11 @@ const Diagrams = () => {
 
       <div className="mt-4 flex flex-col justify-start items-start align-middle">
         {diagrams.map((diagram: DiagramOutput) => (
-          <DiagramData key={diagram._id} diagram={diagram} />
+          <DiagramData
+            key={diagram._id}
+            diagram={diagram}
+            refresh={refreshDiagrams}
+          />
         ))}
       </div>
     </div>

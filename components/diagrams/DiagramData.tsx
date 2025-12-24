@@ -6,13 +6,19 @@ import { useState } from "react";
 import DiagramEdit from "./DiagramEdit";
 import { Button } from "../ui/button";
 
-type Props = { diagram: DiagramOutput };
+type Props = { diagram: DiagramOutput; refresh: () => void };
 
-const DiagramData = ({ diagram }: Props) => {
+const DiagramData = ({ diagram, refresh }: Props) => {
   const [status, setStatus] = useState<"show" | "edit">("show");
 
   if (status === "edit") {
-    return <DiagramEdit diagram={diagram} back={() => setStatus("show")} />;
+    return (
+      <DiagramEdit
+        diagram={diagram}
+        back={() => setStatus("show")}
+        refresh={refresh}
+      />
+    );
   }
 
   return (

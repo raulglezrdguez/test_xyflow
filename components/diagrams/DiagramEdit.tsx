@@ -11,9 +11,9 @@ import ErrorMessage from "../ErrorMessage";
 import { isValidJavaScriptExpression } from "@/lib/utils";
 import AlertMessage from "../AlertMessage";
 
-type Props = { diagram: DiagramOutput; back: () => void };
+type Props = { diagram: DiagramOutput; back: () => void; refresh: () => void };
 
-const DiagramEdit = ({ diagram, back }: Props) => {
+const DiagramEdit = ({ diagram, back, refresh }: Props) => {
   const { user } = useAuthStore();
 
   const [saving, setSaving] = useState(false);
@@ -68,10 +68,6 @@ const DiagramEdit = ({ diagram, back }: Props) => {
     }
   };
 
-  // const handleRemove = () => {
-  //   setDeleteDialogOpen(true);
-  // };
-
   const confirmDelete = async () => {
     setDeleteDialogOpen(false);
 
@@ -86,6 +82,7 @@ const DiagramEdit = ({ diagram, back }: Props) => {
       }
 
       toast.success(`Diagrama "${title}" eliminado exitosamente`);
+      refresh();
       back();
     } catch (err: unknown) {
       setError((err as Error).message || String(err));

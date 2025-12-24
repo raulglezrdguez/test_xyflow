@@ -19,6 +19,10 @@ export type DiagramNode = {
     x: number;
     y: number;
   };
+  measured: {
+    width: number;
+    height: number;
+  };
   data?: Record<string, unknown>;
 };
 
@@ -42,11 +46,9 @@ export type CreateDiagramInput = {
   author: string;
   public?: boolean;
   result?: ResultInput[];
-  state?: {
-    nodes?: DiagramNode[];
-    edges?: DiagramEdge[];
-    viewport?: DiagramViewport;
-  };
+  nodes?: DiagramNode[];
+  edges?: DiagramEdge[];
+  viewport?: DiagramViewport;
 };
 
 export type UpdateDiagramInput = {
@@ -54,11 +56,9 @@ export type UpdateDiagramInput = {
   description?: string;
   public?: boolean;
   result?: ResultInput[];
-  state?: {
-    nodes?: DiagramNode[];
-    edges?: DiagramEdge[];
-    viewport?: DiagramViewport;
-  };
+  nodes?: DiagramNode[];
+  edges?: DiagramEdge[];
+  viewport?: DiagramViewport;
 };
 
 export type DiagramInput = {

@@ -10,11 +10,14 @@ import { toast } from "sonner";
 import ErrorMessage from "../ErrorMessage";
 import { isValidJavaScriptExpression } from "@/lib/utils";
 import AlertMessage from "../AlertMessage";
+import { useFlowStore } from "@/store/flowStore";
 
 type Props = { diagram: DiagramOutput; back: () => void; refresh: () => void };
 
 const DiagramEdit = ({ diagram, back, refresh }: Props) => {
   const { user } = useAuthStore();
+  const nodes = useFlowStore((state) => state.nodes);
+  const edges = useFlowStore((state) => state.edges);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,12 +43,13 @@ const DiagramEdit = ({ diagram, back, refresh }: Props) => {
 
     setSaving(true);
     setError(null);
-
     const payload = {
       title,
       description,
       public: publicDiagram,
       result: results,
+      nodes,
+      edges,
     };
 
     try {

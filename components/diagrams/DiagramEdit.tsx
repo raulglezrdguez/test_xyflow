@@ -20,6 +20,7 @@ import * as Switch from "@radix-ui/react-switch";
 import { toast } from "sonner";
 import ErrorMessage from "../ErrorMessage";
 import { isValidJavaScriptExpression } from "@/lib/utils";
+import AlertMessage from "../AlertMessage";
 
 type Props = { diagram: DiagramOutput; back: () => void };
 
@@ -335,38 +336,13 @@ const DiagramEdit = ({ diagram, back }: Props) => {
             <Save size={14} />
           )}
         </Button>
-        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant={"outline"}
-              className="hover:cursor-pointer text-red-400 hover:text-red-200 transition-colors duration-300 ease-in-out"
-            >
-              <XCircle size={14} />
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent className="border border-gray-50">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="text-gray-200">
-                Remove diagram?
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-gray-200">
-                Are you sure you want to delete the diagram &quot;${title}
-                &quot;? This action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel className="text-gray-200">
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={confirmDelete}
-                className="bg-red-600 hover:bg-red-700 text-gray-200"
-              >
-                Remove
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <AlertMessage
+          dialogOpen={deleteDialogOpen}
+          setDialogOpen={setDeleteDialogOpen}
+          title="Remove diagram?"
+          message={`Are you sure you want to delete the diagram &quot;{title}&quot;? This action cannot be undone.`}
+          confirmAction={confirmDelete}
+        />
       </div>
     </div>
   );

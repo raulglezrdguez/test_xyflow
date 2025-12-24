@@ -145,7 +145,7 @@ export const UPDATE_DIAGRAM_MUTATION = gql`
 `;
 
 export const DELETE_DIAGRAM_MUTATION = gql`
-  mutation DeleteDiagram($id: String!) {
+  mutation DeleteDiagram($id: ID!) {
     deleteDiagram(id: $id) {
       _id
       title

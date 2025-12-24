@@ -18,6 +18,7 @@ const DiagramEdit = ({ diagram, back, refresh }: Props) => {
   const { user } = useAuthStore();
   const nodes = useFlowStore((state) => state.nodes);
   const edges = useFlowStore((state) => state.edges);
+  const viewport = useFlowStore((state) => state.viewport);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +51,7 @@ const DiagramEdit = ({ diagram, back, refresh }: Props) => {
       result: results,
       nodes,
       edges,
+      viewport,
     };
 
     try {

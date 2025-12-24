@@ -173,6 +173,7 @@ function FlowWithExecution() {
   const nodeSelected = useFlowStore((state) => state.nodeSelected);
   const setEdgeSelected = useFlowStore((state) => state.setEdgeSelected);
   const edgeSelected = useFlowStore((state) => state.edgeSelected);
+  const setViewport = useFlowStore((state) => state.setViewport);
 
   const onNodesChange = useFlowStore((state) => state.onNodesChange);
   const onEdgesChange = useFlowStore((state) => state.onEdgesChange);
@@ -259,6 +260,7 @@ function FlowWithExecution() {
             onNodeClick={handleNodeClick}
             onEdgeClick={handleEdgeClick}
             onPaneClick={handlePaneClick}
+            onViewportChange={setViewport}
             fitView
             snapToGrid
             onDragOver={handleDragOver}

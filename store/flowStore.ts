@@ -17,6 +17,7 @@ type FlowStore = {
   executionStatus: "idle" | "running" | "paused" | "completed";
   nodeSelected: MyNode | null;
   edgeSelected: MyEdge | null;
+  viewport: { x: number; y: number; zoom: number };
 
   // Acciones del diagrama
   setNodes: (nodes: MyNode[] | ((nds: MyNode[]) => MyNode[])) => void;
@@ -40,6 +41,7 @@ type FlowStore = {
   updateEdgeData: (edgeId: string, data: object) => void;
 
   addNode: (params: { type: MyNodeType; position: XYPosition }) => void;
+  setViewport: (viewport: { x: number; y: number; zoom: number }) => void;
 };
 
 export const useFlowStore = create<FlowStore>()((set) => ({
@@ -50,6 +52,7 @@ export const useFlowStore = create<FlowStore>()((set) => ({
   executionStatus: "idle",
   nodeSelected: null,
   edgeSelected: null,
+  viewport: { x: 0, y: 0, zoom: 1 },
 
   setNodes: (nodes) =>
     set(
@@ -143,4 +146,6 @@ export const useFlowStore = create<FlowStore>()((set) => ({
 
       return { nodes: [...state.nodes, newNode] };
     }),
+
+  setViewport: (viewport) => set({ viewport }),
 }));

@@ -308,17 +308,22 @@ export default function Editor() {
   }
 
   return (
-    <PanelGroup direction="horizontal" className="min-h-screen">
+    <PanelGroup
+      direction="horizontal"
+      className="h-screen w-full overflow-hidden"
+    >
       <Panel defaultSize={25} minSize={10}>
-        <section className="h-full bg-gray-800 p-4">
-          <MenuEditor />
-          <div className="h-32" />
-          <Diagrams />
+        <section className="bg-gray-800 p-4">
+          <div className="h-screen flex flex-col overflow-y-auto">
+            <MenuEditor />
+            <div className="h-32 shrink-0" />
+            <Diagrams />
+          </div>
         </section>
       </Panel>
       <PanelResizeHandle className="w-2 bg-gray-600 hover:bg-gray-500 transition-colors" />
       <Panel defaultSize={50} minSize={20}>
-        <section className="h-full bg-black">
+        <section className="h-full bg-black overflow-hidden">
           <ReactFlowProvider>
             <FlowMachineProvider>
               <FlowWithExecution />
@@ -328,9 +333,11 @@ export default function Editor() {
       </Panel>
       <PanelResizeHandle className="w-2 bg-gray-600 hover:bg-gray-500 transition-colors" />
       <Panel defaultSize={25} minSize={10}>
-        <section className="h-full bg-gray-800 p-4">
-          <UserMenu />
-          <Properties />
+        <section className="bg-gray-800 p-4">
+          <div className="h-screen flex flex-col overflow-y-auto">
+            <UserMenu />
+            <Properties />
+          </div>
         </section>
       </Panel>
     </PanelGroup>

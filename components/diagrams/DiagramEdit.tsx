@@ -4,17 +4,6 @@ import { DiagramOutput, ResultInput } from "@/lib/types/diagram";
 import { useAuthStore } from "@/store/user";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../ui/alert-dialog";
 import { Check, Edit3, Loader, Save, XCircle } from "lucide-react";
 import * as Switch from "@radix-ui/react-switch";
 import { toast } from "sonner";
